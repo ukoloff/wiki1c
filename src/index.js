@@ -14,6 +14,8 @@ async function main() {
     linkify: true,
     typographer: true,
   })
+    .use(mdc, 'info', { marker: '!' })
+
   var html = mdx.render(r.recordset[0].md)
   console.log(html)
 }
