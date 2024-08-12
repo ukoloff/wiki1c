@@ -1,5 +1,6 @@
 const md = require('markdown-it')
 const mdc = require('markdown-it-container')
+const mssql = require('mssql')
 const sql = require('./sql')
 
 main()
@@ -27,7 +28,9 @@ async function main() {
     Where
         title Like '%ssd'
     `)
-  var a = await q.request().query(`
+  var a = await q.request()
+  .input('pid', mssql.Binary, r.recordset[0].id)
+  .query(`
     with attachments as(
         select
             _IDRRef as id,
@@ -46,7 +49,7 @@ async function main() {
     from
         attachments
     where
-        page_id = 0x${r.recordset[0].id.toString('hex')}
+        page_id = @pid
     `)
   await q.close()
 
