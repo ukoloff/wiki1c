@@ -6,7 +6,7 @@ main()
 
 async function main() {
   const q = await sql()
-  var r = await q.query`
+  var r = await q.request().query(`
     with pages as(
         select
             _IDRRef as id,
@@ -26,8 +26,8 @@ async function main() {
         pages
     Where
         title Like '%ssd'
-    `
-  var a = await q.query`
+    `)
+  var a = await q.request().query(`
     with attachments as(
         select
             _IDRRef as id,
@@ -46,8 +46,8 @@ async function main() {
     from
         attachments
     where
-        page_id = 0xa691cfe02c3a99ae4b11c1fc4e883b36
-    `
+        page_id = 0x${r.recordset[0].id.toString('hex')}
+    `)
   await q.close()
 
   var mdx = md({
