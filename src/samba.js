@@ -1,7 +1,9 @@
 require('dotenv/config')
 const smb = require('@marsaud/smb2')
 
-module.exports = function () {
+module.exports =  connect
+
+function connect() {
   return new smb({
     share: '\\\\srvfile-ekbh1\\dfs02$',
     domain: process.env.DOM,

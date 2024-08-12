@@ -1,6 +1,8 @@
 require('dotenv/config')
 
-module.exports = function () {
+module.exports = connect
+
+function connect() {
   const sql = require('mssql')
 
   return sql.connect({
@@ -8,7 +10,7 @@ module.exports = function () {
     user: process.env.USR,
     password: process.env.PSS,
     server: 'srvsql-1c',
-    database: 'conv',
+    database: 'UPRIT_WORK',
     options: {
       trustServerCertificate: true,
     }

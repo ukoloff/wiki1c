@@ -2,7 +2,7 @@
   "name": "wiki1c",
   "version": "1.0.0",
   "description": "Быстрое отображение Базы Знаний из 1С: Управление ИТ-предприятием",
-  "main": "index.js",
+  "main": "src",
   "scripts": {
     "test": "node --test --openssl-legacy-provider"
   },
