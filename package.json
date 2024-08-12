@@ -4,7 +4,7 @@
   "description": "Быстрое отображение Базы Знаний из 1С: Управление ИТ-предприятием",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test --openssl-legacy-provider"
   },
   "keywords": [],
   "author": "",
