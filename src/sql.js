@@ -1,4 +1,5 @@
 require('dotenv/config')
+cte = require('./cte')
 
 module.exports = connect
 
@@ -15,4 +16,8 @@ function connect() {
       trustServerCertificate: true,
     }
   })
+}
+
+for (var k in cte) {
+  connect[k] = cte[k]
 }
