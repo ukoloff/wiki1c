@@ -1,8 +1,10 @@
 const mssql = require('mssql')
 const sql = require('./sql')
 const md = require('./md')
+const parallel = require('./parallel')
 
-main()
+// main()
+parallel()
 
 async function main() {
   const q = await sql()
