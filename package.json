@@ -15,5 +15,8 @@
     "markdown-it": "^14.1.0",
     "markdown-it-container": "^4.0.0",
     "mssql": "^11.0.1"
+  },
+  "devDependencies": {
+    "chokidar": "^3.6.0"
   }
 }
