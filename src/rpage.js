@@ -12,6 +12,8 @@ async function render(res, page) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
   res.write(`<title>${page.title}</title>`)
 
+  await breadcrumbs(res, page)
+
   if (page.ccount) {
     await renderChildren(res, page)
     if (page.md) res.write('<hr>')
@@ -47,4 +49,24 @@ async function renderChildren(res, page) {
           order by title
         `)
   }
+}
+
+async function breadcrumbs(res, page) {
+  res.write('<div class="breadcrumbs">')
+
+  var h = await sql()
+  var r = await h.request()
+    .input('pid', mssql.Binary, page.id)
+    .query(`
+      with ${sql.pages}, ${sql.spaces}
+      select
+        S.name
+      from
+        pages P join spaces S on P.space_id = S.id
+      where
+        P.id = @pid
+      `)
+  res.write(`<a href="..">${r.recordset[0].name}</a> &raquo; `)
+
+  res.write(`${page.title}</div>\n`)
 }
