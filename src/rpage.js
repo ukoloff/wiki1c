@@ -68,5 +68,43 @@ async function breadcrumbs(res, page) {
       `)
   res.write(`<a href="..">${r.recordset[0].name}</a> &raquo; `)
 
-  res.write(`${page.title}</div>\n`)
+  r = await h.request()
+  .input('pid', mssql.Binary, page.id)
+  .query(`
+      with ${sql.pages},
+      tower as (
+          select
+              id,
+              up,
+              0 as lvl,
+              title
+          from
+              pages
+          where
+              id = @pid
+          union all
+          select
+              P.id,
+              P.up,
+              lvl + 1,
+              P.title
+          from
+              pages P
+              join tower on P.id = tower.up
+      )
+      select
+          id, title
+      from
+          tower
+      where
+          lvl > 0
+      order by
+          lvl desc
+
+    `)
+  for (var row of r.recordset) {
+    res.write(`<a href="../${row.id.toString('hex')}/">${ html(row.title) }</a> &raquo; `)
+  }
+
+  res.write(`<u>${page.title}</u></div>\n`)
 }
