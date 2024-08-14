@@ -6,7 +6,7 @@
       {
         "label": "Open browser",
         "type": "shell",
-        "command": "start http://localhost:5432",
+        "command": "start http://localhost:5678",
         "problemMatcher": []
       }
     ]

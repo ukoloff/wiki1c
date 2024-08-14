@@ -32,12 +32,8 @@ async function render(res, page, name) {
   // var src = await smb.createReadStream('1c\\UPRIT_WORK\\' + r.filepath)
   var src = await smb.readFile(samba.folder + "\\" + r.filepath)
   res.setHeader('Content-Type', 'application/binary')
-  res.end(src)
-  // src.pipe(res)
-
   // res.setHeader('Content-Length', r.bytes)
-
-
-  // res.end()
+  // src.pipe(res)
+  res.end(src)
 }
 
