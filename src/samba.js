@@ -11,3 +11,5 @@ function connect() {
     password: process.env.PSS,
   })
 }
+
+connect.folder = '1c\\UPRIT_WORK'

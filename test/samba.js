@@ -1,8 +1,9 @@
 const test = require('node:test')
 
 test('Connect to Samba', async function (t) {
-  const smb = require('../src/samba')()
+  const samba = require('../src/samba')
+  var smb = samba()
 
-  await smb.readdir('1c\\UPRIT_WORK')
+  await smb.readdir(samba.folder)
   await smb.disconnect()
 })
