@@ -26,7 +26,7 @@ async function render(res, page, name) {
         and ext = @ext
     `)
   r = r.recordset[0]
-  if (!r) return oops(req, res)
+  if (!r) return oops(res.req, res)
 
   var smb = samba()
   // var src = await smb.createReadStream('1c\\UPRIT_WORK\\' + r.filepath)
