@@ -10,7 +10,7 @@ module.exports = render
 
 async function render(res, page) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  res.write(`<title>${page.title}</title>`)
+  res.write(`<!DOCTYPE html><html><head><title>${page.title}</title></head><body>`)
 
   await breadcrumbs(res, page)
 
@@ -19,7 +19,9 @@ async function render(res, page) {
     if (page.md) res.write('<hr>')
   }
 
-  res.end(page.md ? md(page.md) : null)
+  if (page.md) res.write(md(page.md))
+
+  res.end(`</body></html>`)
 }
 
 async function renderChildren(res, page) {
