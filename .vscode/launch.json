@@ -12,9 +12,11 @@
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}",
+      "env": {
+        "NODE_OPTIONS": "--openssl-legacy-provider"
+      },
       "args": [
-        "-debug",
-        "--openssl-legacy-provider"
+        "-debug"
       ]
     }
   ]
