@@ -1,4 +1,5 @@
 const sql = require('./sql')
+const html = require('./h')
 
 module.exports = home
 
@@ -11,7 +12,7 @@ async function home(req, res) {
   q.stream = true
   q
     .on('row', row => {
-      res.write(`<li><a href=${row.id.toString('hex')}/>${row.title}</a>`)
+      res.write(`<li><a href=${row.id.toString('hex')}/>${html(row.title)}</a>`)
     })
     .on('done', _ => {
       res.end('</ul>')
