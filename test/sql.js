@@ -8,24 +8,38 @@ test('Connect to MS SQL', async function (t) {
   await q.close()
 })
 
-test('List articles', async function (t) {
+test('List all articles', async function (t) {
   var q = await sql()
 
   var r = await q.request().query(`
-    with pages as(${sql.pages})
+    with ${sql.pages}
     Select
-        Top 1 id, md
+        *
     From
         pages
     `)
   await q.close()
 })
 
+test('List articles', async function (t) {
+  var q = await sql()
+
+  var r = await q.request().query(`
+    with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+    Select
+        *
+    From
+        pagez
+    `)
+  await q.close()
+})
+
+
 test('List attachments', async function (t) {
   var q = await sql()
 
   var r = await q.request().query(`
-    with attachments as(${sql.attachments})
+    with ${sql.attachments}
     select
         basename, ext, bytes, filepath
     from
@@ -39,7 +53,7 @@ test('List spaces', async function (t) {
   var q = await sql()
 
   var r = await q.request().query(`
-      with spaces as(${sql.spaces})
+      with ${sql.spaces}
       select
           *
       from

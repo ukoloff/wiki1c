@@ -35,3 +35,19 @@ exports.spaces = `
   from
       _Reference174
 `
+
+exports.pagez = `
+  select
+      *
+  from
+      pages
+  where
+      space_id in(
+          select
+              id
+          from
+              spaces
+          where
+              handle = 'obshchee-prostranstvo'
+      )
+`

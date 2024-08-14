@@ -19,5 +19,5 @@ function connect() {
 }
 
 for (var k in cte) {
-  connect[k] = cte[k]
+  connect[k] = `${k} as (${cte[k]})`
 }
