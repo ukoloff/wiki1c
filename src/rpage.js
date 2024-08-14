@@ -35,7 +35,7 @@ async function renderChildren(res, page) {
     q.stream = true
     q
       .on('row', row => {
-        res.write(`<li><a href=../${row.id.toString('hex')}/>${html(row.title)}</a>`)
+        res.write(`<li><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
       })
       .on('done', _ => {
         res.write('</ul>')
@@ -68,7 +68,7 @@ async function breadcrumbs(res, page) {
       where
         P.id = @pid
       `)
-  res.write(`<a href="..">${r.recordset[0].name}</a> &raquo; `)
+  res.write(`<a href="..">${r.recordset[0].name}</a> &raquo;\n`)
 
   r = await h.request()
   .input('pid', mssql.Binary, page.id)
@@ -105,7 +105,7 @@ async function breadcrumbs(res, page) {
 
     `)
   for (var row of r.recordset) {
-    res.write(`<a href="../${row.id.toString('hex')}/">${ html(row.title) }</a> &raquo; `)
+    res.write(`<a href="../${row.id.toString('hex')}/">${ html(row.title) }</a> &raquo;\n`)
   }
 
   res.write(`<u>${page.title}</u></div>\n`)
