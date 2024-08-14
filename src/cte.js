@@ -10,6 +10,7 @@ exports.pages = `
       _Fld9228 as md
   from
       _Reference9221
+  where _Marked = 0x00
 `
 exports.attachments = `
   select
