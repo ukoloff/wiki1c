@@ -4,6 +4,7 @@
 const mssql = require('mssql')
 const sql = require('./sql')
 const html = require('./h')
+const md = require('./md')
 
 module.exports = render
 
@@ -16,7 +17,7 @@ async function render(res, page) {
     if (page.md) res.write('<hr>')
   }
 
-  res.end('PAGE')
+  res.end(page.md ? md(page.md) : null)
 }
 
 async function renderChildren(res, page) {
