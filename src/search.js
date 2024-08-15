@@ -1,7 +1,68 @@
 //
 // Search page
 //
+const url = require('node:url')
+const qs = require('node:querystring')
+const html = require('./h')
+const sql = require('./sql')
+
 module.exports = search
-function search(req, res) {
-  res.end('Hi there!')
+
+const
+  columns = 'title:lat:md'.split(':')
+
+async function search(req, res) {
+  res.setHeader('Content-Type', 'text/html; charset=utf-8')
+  res.write(`<!DOCTYPE html><html><head><title>Поиск</title></head><body>`)
+
+  var q = qs.decode(url.parse(req.url).query).q || ''
+
+  res.write(`
+    <form>
+    <div>
+    <input type="search" required name="q" value="${html(q)}"/>
+    <input type="submit" value=" Поиск " />
+    </div>
+    </form>
+    `)
+
+  var $where = ''
+  for (var m of q.matchAll(/\p{L}+/ug)) {
+    var w = m[0]
+    if (w.length < 2) continue
+    if ($where) $where += "\nand "
+    $where += '(' + columns.map(f => `${f} like '%${w}%'`).join(' or ') + ')'
+  }
+
+  if ($where) await render(res, $where)
+
+  res.end(`</body></html>`)
+}
+
+async function render(res, $where) {
+  var h = await sql()
+
+  await new Promise(run)
+
+  function run(resolve, reject) {
+    res.write('<ul>')
+    var q = h.request()
+    q.stream = true
+    q
+      .on('row', row => {
+        res.write(`<li><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
+      })
+      .on('done', _ => {
+        res.write('</ul>')
+        resolve()
+      })
+      .on('error', reject)
+      .query(`
+        with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+        select id, title
+        from pagez
+        where ${$where}
+        order by title
+        `)
+  }
 }
