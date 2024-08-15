@@ -1,0 +1,12 @@
+[Unit]
+Description=PostgreSQL HTTP API
+After=network.target
+
+[Service]
+ExecStart=node .
+WorkingDirectory=/home/wiki1c/wiki1c
+User=wiki1c
+Group=wiki1c
+
+[Install]
+WantedBy=multi-user.target
