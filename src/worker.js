@@ -14,7 +14,7 @@ async function process(req, res) {
     home(req, res)
     return
   }
-  $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
+  var $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
     if (!$m[2]) {
       res.writeHead(301, $m[1] + '/')
