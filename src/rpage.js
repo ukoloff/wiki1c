@@ -71,8 +71,8 @@ async function breadcrumbs(res, page) {
   res.write(`<a href="..">${r.recordset[0].name}</a> &raquo;\n`)
 
   r = await h.request()
-  .input('pid', mssql.Binary, page.id)
-  .query(`
+    .input('pid', mssql.Binary, page.id)
+    .query(`
       with ${sql.pages},
       tower as (
           select
@@ -105,12 +105,31 @@ async function breadcrumbs(res, page) {
 
     `)
   for (var row of r.recordset) {
-    res.write(`<a href="../${row.id.toString('hex')}/">${ html(row.title) }</a> &raquo;\n`)
+    res.write(`<a href="../${row.id.toString('hex')}/">${html(row.title)}</a> &raquo;\n`)
   }
 
   res.write(`<u>${page.title}</u> [<a href="../q/" title="Поиск">?</a>]</div>\n`)
 }
 
 async function fixURLs(page) {
-  return page.md
+  var h = await sql()
+  var q = await h.request()
+  q.arrayRowMode = true
+  var r = await q
+    .input('pid', mssql.Binary, page.id)
+    .query(`
+      with ${sql.attachments}
+      select
+        concat(basename, iif(ext = '', '', '.'), ext) as name
+      from
+        attachments
+      WHERE
+        page_id = @pid
+        and basename like '% %'
+      `)
+  var md = page.md
+  r.recordset.map( x => x[0]).forEach(f =>{
+    md = md.replaceAll(`](${f})`, `](<${f}>)`)
+  })
+  return md
 }
