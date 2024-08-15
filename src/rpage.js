@@ -19,7 +19,7 @@ async function render(res, page) {
     if (page.md) res.write('<hr>')
   }
 
-  if (page.md) res.write(md(page.md))
+  if (page.md) res.write(md(await fixURLs(page)))
 
   res.end(`</body></html>`)
 }
@@ -109,4 +109,8 @@ async function breadcrumbs(res, page) {
   }
 
   res.write(`<u>${page.title}</u> [<a href="../q/" title="Поиск">?</a>]</div>\n`)
+}
+
+async function fixURLs(page) {
+  return page.md
 }
