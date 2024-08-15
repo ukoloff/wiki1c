@@ -23,7 +23,7 @@ async function process(req, res) {
     var page = await getpage($m[1])
     if (!page) return oops(req, res)
     return $m[3] ?
-      renderfile(res, page, $m[3]) :
+      renderfile(res, page, decodeURIComponent($m[3])) :
       renderpage(res, page)
   }
   oops(req, res)
