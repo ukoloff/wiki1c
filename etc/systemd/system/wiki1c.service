@@ -1,5 +1,5 @@
 [Unit]
-Description=PostgreSQL HTTP API
+Description=Read-only access to 1C knowledge base
 After=network.target
 
 [Service]
