@@ -22,6 +22,7 @@ async function search(req, res) {
     <div>
     <input type="search" required name="q" value="${html(q)}"/>
     <input type="submit" value=" Поиск " />
+    <a href="..">В начало</a>
     </div>
     </form>
     `)
