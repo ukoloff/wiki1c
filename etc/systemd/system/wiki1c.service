@@ -3,7 +3,7 @@ Description=PostgreSQL HTTP API
 After=network.target
 
 [Service]
-ExecStart=node .
+ExecStart=node --openssl-legacy-provider .
 WorkingDirectory=/home/wiki1c/wiki1c
 User=wiki1c
 Group=wiki1c
