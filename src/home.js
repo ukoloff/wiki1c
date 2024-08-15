@@ -5,7 +5,7 @@ module.exports = home
 
 async function home(req, res) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  res.write('<title>База Знаний</title><ul>')
+  res.write('<title>База Знаний</title><a href="q/">Поиск</a><ul>')
   var h = await sql()
 
   var q = h.request()

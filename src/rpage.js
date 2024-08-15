@@ -108,5 +108,5 @@ async function breadcrumbs(res, page) {
     res.write(`<a href="../${row.id.toString('hex')}/">${ html(row.title) }</a> &raquo;\n`)
   }
 
-  res.write(`<u>${page.title}</u></div>\n`)
+  res.write(`<u>${page.title}</u> [<a href="../q/" title="Поиск">?</a>]</div>\n`)
 }
