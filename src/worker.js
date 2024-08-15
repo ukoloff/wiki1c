@@ -4,6 +4,7 @@ const oops = require('./404')
 const getpage = require('./getpage')
 const renderpage = require('./rpage')
 const renderfile = require('./rfile')
+const search = require('./search')
 
 http.createServer(process)
   .listen(5678)
@@ -14,6 +15,8 @@ async function process(req, res) {
     home(req, res)
     return
   }
+  if (/^\/q\/($|\?)/.test(path))
+    return search(req, res)
   var $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
     if (!$m[2]) {
