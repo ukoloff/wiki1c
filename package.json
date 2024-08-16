@@ -5,6 +5,7 @@
   "main": "src",
   "scripts": {
     "start": "node --openssl-legacy-provider .",
+    "restart": "systemctl restart wiki1c",
     "test": "node --test --openssl-legacy-provider"
   },
   "keywords": [],
