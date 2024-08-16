@@ -6,7 +6,8 @@ module.exports = home
 
 async function home(req, res) {
   head(res, 'База Знаний')
-  res.write('<div class="breadcrumbs"><a href="q/">Поиск</a></div><ul>\n')
+  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
+  res.write('<li class="breadcrumb-item"><a href="q/">Поиск</a></li></ol></nav><ul>\n')
 
   var h = await sql()
 

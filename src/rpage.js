@@ -54,7 +54,7 @@ async function renderChildren(res, page) {
 }
 
 async function breadcrumbs(res, page) {
-  res.write('<div class="breadcrumbs">')
+  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
 
   var h = await sql()
   var r = await h.request()
@@ -68,7 +68,7 @@ async function breadcrumbs(res, page) {
       where
         P.id = @pid
       `)
-  res.write(`<a href="..">${r.recordset[0].name}</a> &raquo;\n`)
+  res.write(`<li class="breadcrumb-item"><a href="..">${r.recordset[0].name}</a></li>\n`)
 
   r = await h.request()
     .input('pid', mssql.Binary, page.id)
@@ -105,10 +105,11 @@ async function breadcrumbs(res, page) {
 
     `)
   for (var row of r.recordset) {
-    res.write(`<a href="../${row.id.toString('hex')}/">${html(row.title)}</a> &raquo;\n`)
+    res.write(`<li class="breadcrumb-item"><a href="../${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
   }
 
-  res.write(`<u>${page.title}</u> [<a href="../q/" title="Поиск">?</a>]</div>\n`)
+  res.write(`<li class="breadcrumb-item active"><u>${page.title}</u>
+    [<a href="../q/" title="Поиск">?</a>]</li></ol></nav>`)
 }
 
 async function fixURLs(page) {

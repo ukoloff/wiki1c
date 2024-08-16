@@ -14,6 +14,9 @@ const
 
 async function search(req, res) {
   head(res, 'Поиск')
+  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
+  res.write('<li class="breadcrumb-item"><a href="../">База знаний</a></li>')
+  res.write('<li class="breadcrumb-item active">Поиск</li></ol></nav><ul>\n')
 
   var q = qs.decode(url.parse(req.url).query).q || ''
 
@@ -22,7 +25,6 @@ async function search(req, res) {
     <div>
     <input type="search" required name="q" value="${html(q)}"/>
     <input type="submit" value=" Поиск " />
-    <a href="..">В начало</a>
     </div>
     </form>
     `)
