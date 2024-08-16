@@ -40,8 +40,12 @@ async function search(req, res) {
   if ($where)
     await render(res, $where)
   else
-    res.write('<p><small>&raquo; Поиск идёт по словам. Служебные символы игнорируются</small></p>')
-
+    res.write(`
+  <p>
+  <div class="alert alert-info fade show" role="alert">
+  Поиск идёт по словам. Служебные символы игнорируются
+  </div>
+      `)
   head.tail(res)
 }
 
