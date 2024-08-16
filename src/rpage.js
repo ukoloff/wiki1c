@@ -131,6 +131,7 @@ async function fixURLs(page) {
   var md = page.md
   r.recordset.map( x => x[0]).forEach(f =>{
     md = md.replaceAll(`](${f})`, `](<${f}>)`)
+    md = md.replaceAll(`](/${f})`, `](<${f}>)`)
   })
   return md
 }
