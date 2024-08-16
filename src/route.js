@@ -18,7 +18,8 @@ async function route(req, res) {
   var $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
     if (!$m[2]) {
-      res.writeHead(301, $m[1] + '/')
+      res.writeHead(301, {Location: $m[1] + '/'})
+        .end()
       return
     }
     var page = await getpage($m[1])
