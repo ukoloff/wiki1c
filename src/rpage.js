@@ -109,7 +109,7 @@ async function breadcrumbs(res, page) {
   }
 
   res.write(`<li class="breadcrumb-item active"><u>${page.title}</u>
-    [<a href="../q/" title="Поиск">?</a>]</li></ol></nav>`)
+    <a href="../q/" title="Поиск по всей Базе Знаний" class="badge text-bg-info">?</a></li></ol></nav>`)
 }
 
 async function fixURLs(page) {
