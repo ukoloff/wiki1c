@@ -8,6 +8,7 @@ function md(md) {
     html: true,
     linkify: true,
     typographer: true,
+    quotes: '«»‘’',
   })
     .use(mdc, 'info', { marker: '!' })
 
