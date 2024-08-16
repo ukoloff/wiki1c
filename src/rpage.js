@@ -4,13 +4,13 @@
 const mssql = require('mssql')
 const sql = require('./sql')
 const html = require('./h')
+const head = require('./head')
 const md = require('./md')
 
 module.exports = render
 
 async function render(res, page) {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  res.write(`<!DOCTYPE html><html><head><title>${page.title}</title></head><body>`)
+  head(res, page.title)
 
   await breadcrumbs(res, page)
 
@@ -21,7 +21,7 @@ async function render(res, page) {
 
   if (page.md) res.write(md(await fixURLs(page)))
 
-  res.end(`</body></html>`)
+  head.tail(res)
 }
 
 async function renderChildren(res, page) {

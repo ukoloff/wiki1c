@@ -1,21 +1,24 @@
 const sql = require('./sql')
 const html = require('./h')
+const head = require('./head')
 
 module.exports = home
 
 async function home(req, res) {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  res.write('<title>База Знаний</title><a href="q/">Поиск</a><ul>')
+  head(res, 'База Знаний')
+  res.write('<a href="q/">Поиск</a><ul>\n')
+
   var h = await sql()
 
   var q = h.request()
   q.stream = true
   q
     .on('row', row => {
-      res.write(`<li><a href=${row.id.toString('hex')}/>${html(row.title)}</a>`)
+      res.write(`<li><a href=${row.id.toString('hex')}/>${html(row.title)}</a>\n`)
     })
     .on('done', _ => {
-      res.end('</ul>')
+      res.write('</ul>')
+      head.tail(res)
     })
   q.query(`
     with ${sql.pages}, ${sql.spaces}, ${sql.pagez}

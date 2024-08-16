@@ -5,6 +5,7 @@ const url = require('node:url')
 const qs = require('node:querystring')
 const html = require('./h')
 const sql = require('./sql')
+const head = require('./head')
 
 module.exports = search
 
@@ -12,8 +13,7 @@ const
   columns = 'title:lat:md'.split(':')
 
 async function search(req, res) {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  res.write(`<!DOCTYPE html><html><head><title>Поиск</title></head><body>`)
+  head(res, 'Поиск')
 
   var q = qs.decode(url.parse(req.url).query).q || ''
 
@@ -40,7 +40,7 @@ async function search(req, res) {
   else
     res.write('<p><small>&raquo; Поиск идёт по словам. Служебные символы игнорируются</small></p>')
 
-  res.end(`</body></html>`)
+  head.tail(res)
 }
 
 async function render(res, $where) {
