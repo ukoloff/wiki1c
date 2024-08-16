@@ -51,17 +51,17 @@ async function render(res, $where) {
   await new Promise(run)
 
   function run(resolve, reject) {
-    res.write('<ul>')
+    res.write('<ul class="list-group">')
     $N = 0;
     var q = h.request()
     q.stream = true
     q
       .on('row', row => {
         $N++
-        res.write(`<li><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
+        res.write(`<li class="list-group-item"><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
       })
       .on('done', _ => {
-        if (!$N) res.write('<li><i>Ничего не найдено</i></li>')
+        if (!$N) res.write('<li class="list-group-item"<i>Ничего не найдено</i></li>')
         res.write('</ul>')
         resolve()
       })

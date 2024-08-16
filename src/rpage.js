@@ -30,12 +30,12 @@ async function renderChildren(res, page) {
   await new Promise(run)
 
   function run(resolve, reject) {
-    res.write('<ul>')
+    res.write('<ul class="list-group">')
     var q = h.request()
     q.stream = true
     q
       .on('row', row => {
-        res.write(`<li><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
+        res.write(`<li class="list-group-item"><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
       })
       .on('done', _ => {
         res.write('</ul>')
