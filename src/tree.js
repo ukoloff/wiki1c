@@ -12,8 +12,7 @@ async function tree(req, res) {
   var r = await h.request().query(`
       with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
       select
-          lower(convert(nvarchar, id, 2)) as id,
-          lower(convert(nvarchar, up, 2)) as up,
+          id, up,
           iif(md is null, 0, 1) as leaf,
           title
       from
@@ -25,12 +24,12 @@ async function tree(req, res) {
   r = r.recordset
   var idx = {}
   for (var row of r) {
-    idx[row.id] = row
+    idx[row.id = row.id.toString('hex')] = row
     row.c = []
   }
   var root = { c: [] }
   for (var row of r) {
-    (idx[row.up] || root).c.push(row)
+    (idx[row.up = row.up.toString('hex')] || root).c.push(row)
   }
 
   function render(rows) {
