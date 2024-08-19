@@ -15,17 +15,9 @@ async function tree(req, res) {
           lower(convert(nvarchar, id, 2)) as id,
           lower(convert(nvarchar, up, 2)) as up,
           iif(md is null, 0, 1) as leaf,
-          title,
-          (
-              select
-                  count(*)
-              from
-                  pagez X
-              where
-                  X.up = Z.id
-          ) as n
+          title
       from
-          pagez Z
+          pagez
       order by
           leaf,
           title
@@ -43,7 +35,12 @@ async function tree(req, res) {
 
   function render(rows) {
     if (!rows.length) return
+    res.write('<ul class="list-group">')
     for (var row of rows) {
+      if (row.leaf) {
+        res.write(`<li class="list-group-item"><a href="../${row.id}/" target="KB">${html(row.title)}</a></li>`)
+        continue
+      }
       res.write(`<details>\n<summary>${html(row.title)}</summary>\n`)
       if (row.c.length) {
         res.write(`<div style="margin-left: 1em;">`)
@@ -52,7 +49,7 @@ async function tree(req, res) {
       }
       res.write('</details>')
     }
-    // res.write('</ul>')
+    res.write('</ul>')
   }
 
   head(res, 'Навигация')

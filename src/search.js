@@ -65,7 +65,7 @@ async function render(res, $where) {
         res.write(`<li class="list-group-item"><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
       })
       .on('done', _ => {
-        if (!$N) res.write('<li class="list-group-item"<i>Ничего не найдено</i></li>')
+        if (!$N) res.write('<li class="list-group-item"><i>Ничего не найдено</i></li>')
         res.write('</ul>')
         resolve()
       })
