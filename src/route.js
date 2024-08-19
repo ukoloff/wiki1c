@@ -4,6 +4,7 @@ const getpage = require('./getpage')
 const renderpage = require('./rpage')
 const renderfile = require('./rfile')
 const search = require('./search')
+const tree = require('./tree')
 
 module.exports = route
 
@@ -15,6 +16,8 @@ async function route(req, res) {
   }
   if (/^\/q\/($|\?)/.test(path))
     return search(req, res)
+  if (/^\/nav\/($|\?)/.test(path))
+    return tree(req, res)
   var $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
     if (!$m[2]) {
