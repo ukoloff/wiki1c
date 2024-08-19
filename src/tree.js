@@ -32,7 +32,7 @@ async function tree(req, res) {
     (idx[row.up = row.up.toString('hex')] || root).c.push(row)
   }
 
-  function render(rows) {
+  function render(rows, level=1) {
     if (!rows.length) return
     res.write('<ul class="list-group">')
     for (var row of rows) {
@@ -40,10 +40,10 @@ async function tree(req, res) {
         res.write(`<li class="list-group-item"><a href="../${row.id}/" target="KB">${html(row.title)}</a></li>`)
         continue
       }
-      res.write(`<details>\n<summary>${html(row.title)}</summary>\n`)
+      res.write(`<details name="${level}">\n<summary>${html(row.title)}</summary>\n`)
       if (row.c.length) {
         res.write(`<div style="margin-left: 1em;">`)
-        render(row.c)
+        render(row.c, level+1)
         res.write(`</div>`)
       }
       res.write('</details>')
