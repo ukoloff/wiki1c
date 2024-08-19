@@ -36,12 +36,28 @@ async function tree(req, res) {
     idx[row.id] = row
     row.c = []
   }
-  var root = {c: []}
+  var root = { c: [] }
   for (var row of r) {
     (idx[row.up] || root).c.push(row)
   }
 
+  function render(rows) {
+    if (!rows.length) return
+    for (var row of rows) {
+      res.write(`<details>\n<summary>${html(row.title)}</summary>\n`)
+      if (row.c.length) {
+        res.write(`<div style="margin-left: 1em;">`)
+        render(row.c)
+        res.write(`</div>`)
+      }
+      res.write('</details>')
+    }
+    // res.write('</ul>')
+  }
+
   head(res, 'Навигация')
+
+  render(root.c)
 
   head.tail(res)
 }
