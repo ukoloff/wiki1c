@@ -1,5 +1,6 @@
 !(function () {
-  document.documentElement.style.setProperty('--split-ratio', '27%')
+  if (localStorage.split)
+    document.documentElement.style.setProperty('--split-ratio', localStorage.split + '%')
 
   document.addEventListener("DOMContentLoaded", ready, { once: true })
 
@@ -23,6 +24,7 @@
       if (!fired) return
       var r = Math.round(ev.clientX / splitter.parentNode.clientWidth * 100)
       r = Math.min(95, Math.max(5, r))
+      localStorage.split = r
       document.documentElement.style.setProperty('--split-ratio', r + '%')
     }
 
