@@ -27,6 +27,9 @@ ${await fs.readFile(path.join(__dirname, '../assets/kb.js'))}
 </script>
 </head>
 <body>
+<div><div class="container-fluid">A</div></div>
+<div><div class="container-fluid">B</div></div>
+<div></div>
   `.trim())
 }
 
