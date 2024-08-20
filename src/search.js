@@ -16,7 +16,7 @@ const
 async function search(req, res) {
   head(res, 'Поиск')
   res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
-  res.write(`<li class="breadcrumb-item"><a href="${req.$base}">База знаний</a></li>`)
+  res.write(`<li class="breadcrumb-item"><a href="${res.$base}">База знаний</a></li>`)
   res.write('<li class="breadcrumb-item active">Поиск</li></ol></nav><ul>\n')
 
   var q = qs.decode(url.parse(req.url).query).q || ''
@@ -66,7 +66,7 @@ async function render(res, $where) {
   $N = 0;
   for await (let row of sql2it(q)) {
     $N++
-    res.write(`<li class="list-group-item"><a href="${res.req.$base}${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
+    res.write(`<li class="list-group-item"><a href="${res.$base}${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
   }
   if (!$N)
     res.write('<li class="list-group-item"><i>Ничего не найдено</i></li>')

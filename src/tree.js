@@ -37,7 +37,7 @@ async function tree(req, res) {
     res.write('<ul class="list-group">')
     for (var row of rows) {
       if (row.leaf) {
-        res.write(`<li class="list-group-item" title="${html(row.title)}"><a href="${req.$base}${row.id}/" target="KB">${html(row.title)}</a></li>`)
+        res.write(`<li class="list-group-item" title="${html(row.title)}"><a href="${res.$base}${row.id}/" target="KB">${html(row.title)}</a></li>`)
         continue
       }
       res.write(`<details name="$${level}">\n<summary title="${html(row.title)}">${html(row.title)}</summary>\n`)
