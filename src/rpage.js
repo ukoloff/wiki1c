@@ -32,6 +32,15 @@ async function renderChildren(res, page) {
   function run(resolve, reject) {
     res.write('<ul class="list-group">')
     var q = h.request()
+    q
+      .input('pid', mssql.Binary, page.id)
+      .query(`
+        with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+          select id, title
+          from pagez
+          where up = @pid
+          order by title
+        `)
     q.stream = true
     q
       .on('row', row => {
@@ -42,14 +51,6 @@ async function renderChildren(res, page) {
         resolve()
       })
       .on('error', reject)
-      .input('pid', mssql.Binary, page.id)
-      .query(`
-        with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
-          select id, title
-          from pagez
-          where up = @pid
-          order by title
-        `)
   }
 }
 
@@ -129,7 +130,7 @@ async function fixURLs(page) {
         and basename like '% %'
       `)
   var md = page.md
-  r.recordset.map( x => x[0]).forEach(f =>{
+  r.recordset.map(x => x[0]).forEach(f => {
     md = md.replaceAll(`](${f})`, `](<${f}>)`)
     md = md.replaceAll(`](/${f})`, `](<${f}>)`)
   })

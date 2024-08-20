@@ -12,6 +12,14 @@ async function home(req, res) {
   var h = await sql()
 
   var q = h.request()
+  q.query(`
+    with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+    select
+      id, title
+    from pagez
+    where up=0x00
+    order by title
+    `)
   q.stream = true
   q
     .on('row', row => {
@@ -21,12 +29,4 @@ async function home(req, res) {
       res.write('</ul>')
       head.tail(res)
     })
-  q.query(`
-    with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
-    select
-      id, title
-    from pagez
-    where up=0x00
-    order by title
-    `)
 }

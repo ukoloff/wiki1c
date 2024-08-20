@@ -58,6 +58,14 @@ async function render(res, $where) {
     res.write('<ul class="list-group">')
     $N = 0;
     var q = h.request()
+    q
+      .query(`
+        with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+        select id, title
+        from pagez
+        where ${$where}
+        order by title
+        `)
     q.stream = true
     q
       .on('row', row => {
@@ -70,12 +78,5 @@ async function render(res, $where) {
         resolve()
       })
       .on('error', reject)
-      .query(`
-        with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
-        select id, title
-        from pagez
-        where ${$where}
-        order by title
-        `)
   }
 }
