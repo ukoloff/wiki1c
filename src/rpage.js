@@ -4,25 +4,18 @@
 const mssql = require('mssql')
 const sql = require('./sql')
 const html = require('./h')
-const head = require('./head')
 const md = require('./md')
-const sql2it = require('./sql2it')
+const layout = require('./layout')
 
 module.exports = render
 
 async function render(res, page) {
-  head(res, page.title)
+  layout(res, page.title, content)
 
-  await breadcrumbs(res, page)
-
-  if (page.ccount) {
-    await renderChildren(res, page)
-    if (page.md) res.write('<hr>')
+  async function content() {
+    if (page.md)
+      res.write(md(await fixURLs(page)))
   }
-
-  if (page.md) res.write(md(await fixURLs(page)))
-
-  head.tail(res)
 }
 
 async function renderChildren(res, page) {

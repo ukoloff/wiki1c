@@ -6,13 +6,13 @@ body>div {
   position: absolute;
   top: 0;
   bottom: 0;
+  overflow: auto;
+  white-space: nowrap;
 }
 
 body>div:nth-child(1) {
   left: 0;
   width: var(--split-ratio);
-  overflow: auto;
-  white-space: nowrap;
 }
 
 body>div:nth-child(2) {
