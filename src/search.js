@@ -7,19 +7,50 @@ const html = require('./h')
 const sql = require('./sql')
 const head = require('./head')
 const sql2it = require('./sql2it')
+const layout = require('./layout')
 
 module.exports = search
 
 const
   columns = 'title:lat:md'.split(':')
 
-async function search(req, res) {
-  head(res, 'Поиск')
-  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
-  res.write(`<li class="breadcrumb-item"><a href="${res.$base}">База знаний</a></li>`)
-  res.write('<li class="breadcrumb-item active">Поиск</li></ol></nav><ul>\n')
+async function search(res) {
+  var q = qs.decode(url.parse(res.req.url).query).q || ''
 
-  var q = qs.decode(url.parse(req.url).query).q || ''
+  var $where = ''
+  for (var m of q.matchAll(/\p{L}+/ug)) {
+    var w = m[0]
+    if (w.length < 2) continue
+    if ($where) $where += "\nand "
+    $where += '(' + columns.map(f => `${f} like '%${w}%'`).join(' or ') + ')'
+  }
+
+  res.write(`
+    <form>
+    <input type="search"${$where ? '' : 'autofocus'} required name="q" value="${html(q)}" />
+    <input type="submit" value=" Поиск " />
+    </form>
+    `
+    .trim())
+
+  if ($where)
+    await render(res, $where)
+  else
+    res.write(`
+    <p>
+    <div class="alert alert-info fade show" role="alert">
+    Поиск идёт по словам. Служебные символы игнорируются
+    </div>
+`
+      .trim())
+
+}
+// head(res, 'Поиск')
+// res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
+// res.write(`<li class="breadcrumb-item"><a href="${res.$base}">База знаний</a></li>`)
+// res.write('<li class="breadcrumb-item active">Поиск</li></ol></nav><ul>\n')
+
+async function X() {
 
   res.write(`
     <form>

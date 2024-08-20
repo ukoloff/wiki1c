@@ -27,7 +27,7 @@ ${await fs.readFile(path.join(__dirname, '../assets/kb.js'))}
     .trim())
   await tree(res)
   res.write(`</div></div><div><div class="container-fluid">`)
-  await content()
+  await content(res)
   res.write(`</div></div><div></div></body></html>`)
   res.end()
 }

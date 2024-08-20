@@ -3,8 +3,6 @@ const oops = require('./404')
 const getpage = require('./getpage')
 const renderpage = require('./rpage')
 const renderfile = require('./rfile')
-const search = require('./search')
-const dual = require('./dual')
 
 module.exports = route
 
@@ -12,14 +10,11 @@ async function route(req, res) {
   res.$base = `/${req.headers['x-forwarded-base'] || ''}/`.replace(/\/{2,}/g, '/')
 
   var path = req.url
-  if ('/' == path) {
+  if (/^\/($|\?)/.test(path)) {
     home(res)
     return
   }
-  if (/^\/q\/($|\?)/.test(path))
-    return search(req, res)
-  if (/^\/2\/($|\?)/.test(path))
-    return dual(req, res)
+
   var $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
     if (!$m[2]) {

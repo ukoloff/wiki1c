@@ -2,12 +2,10 @@
 // Home page
 //
 const layout = require('./layout')
+const search = require('./search')
 
 module.exports = home
 
 async function home(res) {
-  layout(res, 'База знаний', nop)
-}
-
-function nop() {
+  layout(res, 'База знаний', search)
 }
