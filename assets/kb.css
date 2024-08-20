@@ -27,3 +27,7 @@ body>div:nth-child(3) {
   border: 2px solid navy;
   cursor: w-resize;
 }
+
+details>div:last-child {
+  margin-left: 1em;
+}

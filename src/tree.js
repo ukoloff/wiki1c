@@ -41,7 +41,7 @@ async function tree(res) {
       }
       res.write(`<details name="$${level}">\n<summary title="${html(row.title)}">${html(row.title)}</summary>\n`)
       if (row.c.length) {
-        res.write(`<div style="margin-left: 1em;">`)
+        res.write(`<div>`)
         render(row.c, level + 1)
         res.write(`</div>`)
       }
