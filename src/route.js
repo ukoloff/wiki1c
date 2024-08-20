@@ -10,6 +10,8 @@ const dual = require('./dual')
 module.exports = route
 
 async function route(req, res) {
+  req._base = (req.headers['x-forwarded-base'] || '/').replace(/\/{2,}/g, '/')
+
   var path = req.url
   if ('/' == path) {
     home(req, res)
@@ -24,7 +26,7 @@ async function route(req, res) {
   var $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
     if (!$m[2]) {
-      res.writeHead(301, {Location: $m[1] + '/'})
+      res.writeHead(301, { Location: $m[1] + '/' })
         .end()
       return
     }
