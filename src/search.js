@@ -5,7 +5,6 @@ const url = require('node:url')
 const qs = require('node:querystring')
 const html = require('./h')
 const sql = require('./sql')
-const head = require('./head')
 const sql2it = require('./sql2it')
 const layout = require('./layout')
 

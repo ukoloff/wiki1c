@@ -23,10 +23,10 @@ async function route(req, res) {
       return
     }
     var page = await getpage($m[1])
-    if (!page) return oops(req, res)
+    if (!page) return oops(res)
     return $m[3] ?
       renderfile(res, page, decodeURIComponent($m[3])) :
       renderpage(res, page)
   }
-  oops(req, res)
+  oops(res)
 }
