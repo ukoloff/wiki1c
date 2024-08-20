@@ -16,8 +16,8 @@
 
     function click(ev) {
       if (fired) return
+      ev.preventDefault()
       fired = true
-      console.log(ev)
     }
 
     function move(ev) {
