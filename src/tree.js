@@ -4,14 +4,12 @@
 const html = require('./h')
 const sql = require('./sql')
 const head = require('./head')
-const sql2it = require('./sql2it')
 
 module.exports = tree
 
 async function tree(req, res) {
   var h = await sql()
-  var q = h.request()
-  q.query(`
+  var r = await h.request().query(`
       with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
       select
           id, up,
@@ -23,16 +21,14 @@ async function tree(req, res) {
           leaf,
           title
     `)
-
+  r = r.recordset
   var idx = {}
-  var rows = []
-  for await (let row of sql2it(q)) {
+  for (var row of r) {
     idx[row.id = row.id.toString('hex')] = row
     row.c = []
-    rows.push(row)
   }
   var root = { c: [] }
-  for (var row of rows) {
+  for (var row of r) {
     (idx[row.up = row.up.toString('hex')] || root).c.push(row)
   }
 
