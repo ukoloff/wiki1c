@@ -6,6 +6,7 @@ const qs = require('node:querystring')
 const html = require('./h')
 const sql = require('./sql')
 const head = require('./head')
+const sql2it = require('./sql2it')
 
 module.exports = search
 
@@ -51,32 +52,22 @@ async function search(req, res) {
 
 async function render(res, $where) {
   var h = await sql()
+  var q = h.request()
+  q.query(`
+      with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+      select id, title
+      from pagez
+      where ${$where}
+      order by title
+      `)
 
-  await new Promise(run)
-
-  function run(resolve, reject) {
-    res.write('<ul class="list-group">')
-    $N = 0;
-    var q = h.request()
-    q
-      .query(`
-        with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
-        select id, title
-        from pagez
-        where ${$where}
-        order by title
-        `)
-    q.stream = true
-    q
-      .on('row', row => {
-        $N++
-        res.write(`<li class="list-group-item"><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
-      })
-      .on('done', _ => {
-        if (!$N) res.write('<li class="list-group-item"><i>Ничего не найдено</i></li>')
-        res.write('</ul>')
-        resolve()
-      })
-      .on('error', reject)
+  res.write('<ul class="list-group">')
+  $N = 0;
+  for await (let row of sql2it(q)) {
+    $N++
+    res.write(`<li class="list-group-item"><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
   }
+  if (!$N)
+    res.write('<li class="list-group-item"><i>Ничего не найдено</i></li>')
+  res.write('</ul>')
 }

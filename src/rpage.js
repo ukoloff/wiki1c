@@ -6,6 +6,7 @@ const sql = require('./sql')
 const html = require('./h')
 const head = require('./head')
 const md = require('./md')
+const sql2it = require('./sql2it')
 
 module.exports = render
 
@@ -26,36 +27,25 @@ async function render(res, page) {
 
 async function renderChildren(res, page) {
   var h = await sql()
+  var q = h.request()
+  q
+    .input('pid', mssql.Binary, page.id)
+    .query(`
+      with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+        select id, title
+        from pagez
+        where up = @pid
+        order by title
+      `)
 
-  await new Promise(run)
-
-  function run(resolve, reject) {
-    res.write('<ul class="list-group">')
-    var q = h.request()
-    q
-      .input('pid', mssql.Binary, page.id)
-      .query(`
-        with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
-          select id, title
-          from pagez
-          where up = @pid
-          order by title
-        `)
-    q.stream = true
-    q
-      .on('row', row => {
-        res.write(`<li class="list-group-item"><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
-      })
-      .on('done', _ => {
-        res.write('</ul>')
-        resolve()
-      })
-      .on('error', reject)
+  res.write('<ul class="list-group">')
+  for await (let row of sql2it(q)) {
+    res.write(`<li class="list-group-item"><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
   }
+  res.write('</ul>')
 }
 
 async function breadcrumbs(res, page) {
-  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
 
   var h = await sql()
   var r = await h.request()
@@ -69,9 +59,12 @@ async function breadcrumbs(res, page) {
       where
         P.id = @pid
       `)
+
+  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
   res.write(`<li class="breadcrumb-item"><a href="..">${r.recordset[0].name}</a></li>\n`)
 
-  r = await h.request()
+  q = h.request()
+  q
     .input('pid', mssql.Binary, page.id)
     .query(`
       with ${sql.pages},
@@ -105,7 +98,8 @@ async function breadcrumbs(res, page) {
           lvl desc
 
     `)
-  for (var row of r.recordset) {
+
+  for await(var row of sql2it(q)) {
     res.write(`<li class="breadcrumb-item"><a href="../${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
   }
 
