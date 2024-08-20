@@ -40,7 +40,7 @@ async function renderChildren(res, page) {
 
   res.write('<ul class="list-group">')
   for await (let row of sql2it(q)) {
-    res.write(`<li class="list-group-item"><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
+    res.write(`<li class="list-group-item"><a href=${res.req.$base}${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
   }
   res.write('</ul>')
 }
@@ -61,7 +61,7 @@ async function breadcrumbs(res, page) {
       `)
 
   res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
-  res.write(`<li class="breadcrumb-item"><a href="..">${r.recordset[0].name}</a></li>\n`)
+  res.write(`<li class="breadcrumb-item"><a href="${res.req.$base}">${r.recordset[0].name}</a></li>\n`)
 
   q = h.request()
   q
@@ -100,11 +100,11 @@ async function breadcrumbs(res, page) {
     `)
 
   for await (var row of sql2it(q)) {
-    res.write(`<li class="breadcrumb-item"><a href="../${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
+    res.write(`<li class="breadcrumb-item"><a href="${res.req.$base}${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
   }
 
   res.write(`<li class="breadcrumb-item active"><u>${page.title}</u>
-    <a href="../q/" title="Поиск по всей Базе Знаний" class="badge text-bg-info">?</a></li></ol></nav>`)
+    <a href="${res.req.$base}q/" title="Поиск по всей Базе Знаний" class="badge text-bg-info">?</a></li></ol></nav>`)
 }
 
 async function fixURLs(page) {
