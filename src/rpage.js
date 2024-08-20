@@ -99,7 +99,7 @@ async function breadcrumbs(res, page) {
 
     `)
 
-  for await(var row of sql2it(q)) {
+  for await (var row of sql2it(q)) {
     res.write(`<li class="breadcrumb-item"><a href="../${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
   }
 
@@ -125,8 +125,9 @@ async function fixURLs(page) {
       `)
   var md = page.md
   r.recordset.map(x => x[0]).forEach(f => {
-    md = md.replaceAll(`](${f})`, `](<${f}>)`)
-    md = md.replaceAll(`](/${f})`, `](<${f}>)`)
+    md = md
+      .replaceAll(`](${f})`, `](<${f}>)`)
+      .replaceAll(`](/${f})`, `](<${f}>)`)
   })
   return md
 }
