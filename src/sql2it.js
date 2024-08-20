@@ -1,33 +1,50 @@
 //
 // Make async iterator from SQL stream
 //
+module.exports = feed
 
 async function* feed(request) {
-  let cb, data
+  let cb
+  let events = []
+  let suppress = false
 
   request
-    .on('row', row)
-    .on('done', finish)
-    .on('error', croak)
+    .on('row', handler(1))
+    .on('done', handler(0))
+    .on('error', handler(-1))
     .stream = true
 
   while (true) {
-    var status = await new Promise(resolve => cb = resolve)
-    if (!status) break
-    yield status > 0 ? data : Promise.reject(data)
+    let QQQ = events.length ?
+      events.shift()
+      :
+      await new Promise(init)
+    let [status, data] = QQQ
+    if (!status)
+      break
+    if (status < 0) {
+      yield Promise.reject(data)
+      break
+    }
+    yield data
   }
 
-  function row(row) {
-    data = row
-    cb(1)
+  function init(resolve) {
+    cb = function (item) {
+      cb = 0
+      resolve(item)
+    }
   }
 
-  function finish() {
-    cb(0)
-  }
-
-  function croak(err) {
-    data = err
-    cb(-1)
+  function handler(status) {
+    return function (data) {
+      if (suppress) return
+      if (status <= 0) suppress = true
+      let item = [status, data]
+      if (cb)
+        cb(item)
+      else
+        events.push(item)
+    }
   }
 }

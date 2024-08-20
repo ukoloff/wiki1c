@@ -4,12 +4,14 @@
 const html = require('./h')
 const sql = require('./sql')
 const head = require('./head')
+const sql2it = require('./sql2it')
 
 module.exports = tree
 
 async function tree(req, res) {
   var h = await sql()
-  var r = await h.request().query(`
+  var q = h.request()
+  q.query(`
       with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
       select
           id, up,
@@ -21,18 +23,20 @@ async function tree(req, res) {
           leaf,
           title
     `)
-  r = r.recordset
+
   var idx = {}
-  for (var row of r) {
+  var rows = []
+  for await (let row of sql2it(q)) {
     idx[row.id = row.id.toString('hex')] = row
     row.c = []
+    rows.push(row)
   }
   var root = { c: [] }
-  for (var row of r) {
+  for (var row of rows) {
     (idx[row.up = row.up.toString('hex')] || root).c.push(row)
   }
 
-  function render(rows, level=1) {
+  function render(rows, level = 1) {
     if (!rows.length) return
     res.write('<ul class="list-group">')
     for (var row of rows) {
@@ -43,7 +47,7 @@ async function tree(req, res) {
       res.write(`<details name="$${level}">\n<summary title="${html(row.title)}">${html(row.title)}</summary>\n`)
       if (row.c.length) {
         res.write(`<div style="margin-left: 1em;">`)
-        render(row.c, level+1)
+        render(row.c, level + 1)
         res.write(`</div>`)
       }
       res.write('</details>')
