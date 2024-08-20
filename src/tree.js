@@ -3,11 +3,10 @@
 //
 const html = require('./h')
 const sql = require('./sql')
-const head = require('./head')
 
 module.exports = tree
 
-async function tree(req, res) {
+async function tree(res) {
   var h = await sql()
   var r = await h.request().query(`
       with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
@@ -37,7 +36,7 @@ async function tree(req, res) {
     res.write('<ul class="list-group">')
     for (var row of rows) {
       if (row.leaf) {
-        res.write(`<li class="list-group-item" title="${html(row.title)}"><a href="${res.$base}${row.id}/" target="KB">${html(row.title)}</a></li>`)
+        res.write(`<li class="list-group-item" title="${html(row.title)}"><a href="${res.$base}${row.id}/">${html(row.title)}</a></li>`)
         continue
       }
       res.write(`<details name="$${level}">\n<summary title="${html(row.title)}">${html(row.title)}</summary>\n`)
@@ -50,12 +49,5 @@ async function tree(req, res) {
     }
     res.write('</ul>')
   }
-
-  head(res, 'Навигация')
-
-  res.write(`<div style="position: fixed; left: 0; top: 0; width: 21%; bottom: 0; overflow: auto; white-space: nowrap;">`)
   render(root.c)
-  res.write(`</div>`)
-
-  head.tail(res)
 }

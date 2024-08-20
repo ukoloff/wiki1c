@@ -9,13 +9,13 @@ body>div {
 }
 
 body>div:nth-child(1) {
-  background: yellow;
   left: 0;
   width: var(--split-ratio);
+  overflow: auto;
+  white-space: nowrap;
 }
 
 body>div:nth-child(2) {
-  background: blue;
   left: var(--split-ratio);
   right: 0;
 }
@@ -24,6 +24,6 @@ body>div:nth-child(3) {
   background: blue;
   left: var(--split-ratio);
   width: 0;
-  border: 2px solid red;
+  border: 2px solid navy;
   cursor: w-resize;
 }
