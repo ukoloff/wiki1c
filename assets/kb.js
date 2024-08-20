@@ -5,12 +5,17 @@
   document.addEventListener("DOMContentLoaded", ready, { once: true })
 
   function ready() {
-    // console.log('Hi!', document.documentElement.style.getPropertyValue('--split-ratio'))
+    if (localStorage.expand)
+      try {
+        JSON.parse(localStorage.expand).forEach(id => document.getElementById(id).open = true)
+      } catch (e) { }
+
     var splitter = document.querySelector('body>:nth-child(3)')
 
     splitter.addEventListener('mousedown', click)
     window.addEventListener("mousemove", move)
     window.addEventListener("mouseup", up)
+    window.addEventListener("unload", unload)
 
     var fired = false
 
@@ -31,6 +36,12 @@
     function up(ev) {
       if (!fired) return
       fired = false
+    }
+
+    function unload() {
+      var list = []
+      document.querySelectorAll('details[open]').forEach(z => list.push(z.id))
+      localStorage.expand = JSON.stringify(list)
     }
   }
 })()
