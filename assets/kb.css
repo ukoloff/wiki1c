@@ -2,25 +2,25 @@
   --split-ratio: 32%;
 }
 
-body > div {
+body>div {
   position: absolute;
   top: 0;
   bottom: 0;
 }
 
-body > div:nth-child(1) {
+body>div:nth-child(1) {
   background: yellow;
   left: 0;
   width: var(--split-ratio);
 }
 
-body > div:nth-child(2) {
+body>div:nth-child(2) {
   background: blue;
   left: var(--split-ratio);
   right: 0;
 }
 
-body > div:nth-child(3) {
+body>div:nth-child(3) {
   background: blue;
   left: var(--split-ratio);
   width: 0;
