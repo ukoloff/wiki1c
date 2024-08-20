@@ -5,6 +5,7 @@ const renderpage = require('./rpage')
 const renderfile = require('./rfile')
 const search = require('./search')
 const tree = require('./tree')
+const dual = require('./dual')
 
 module.exports = route
 
@@ -18,6 +19,8 @@ async function route(req, res) {
     return search(req, res)
   if (/^\/nav\/($|\?)/.test(path))
     return tree(req, res)
+  if (/^\/2\/($|\?)/.test(path))
+    return dual(req, res)
   var $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
     if (!$m[2]) {
