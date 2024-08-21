@@ -7,6 +7,7 @@ const html = require('./h')
 const sql = require('./sql')
 const sql2it = require('./sql2it')
 const layout = require('./layout')
+const space = require('./space')
 
 module.exports = search
 
@@ -23,6 +24,11 @@ async function search(res) {
     if ($where) $where += "\nand "
     $where += '(' + columns.map(f => `${f} like '%${w}%'`).join(' or ') + ')'
   }
+
+  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
+  res.write(`<li class="breadcrumb-item"><a href="${res.$base}">${html(await space())}</a></li>`)
+  res.write('<li class="breadcrumb-item active">Поиск</li></ol></nav><ul>\n')
+
 
   res.write(`
     <form>
@@ -44,44 +50,8 @@ async function search(res) {
       .trim())
 
 }
-// head(res, 'Поиск')
-// res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
-// res.write(`<li class="breadcrumb-item"><a href="${res.$base}">База знаний</a></li>`)
-// res.write('<li class="breadcrumb-item active">Поиск</li></ol></nav><ul>\n')
-
-async function X() {
-
-  res.write(`
-    <form>
-    <div>
-    <input type="search" required name="q" value="${html(q)}"/>
-    <input type="submit" value=" Поиск " />
-    </div>
-    </form>
-    `)
-
-  var $where = ''
-  for (var m of q.matchAll(/\p{L}+/ug)) {
-    var w = m[0]
-    if (w.length < 2) continue
-    if ($where) $where += "\nand "
-    $where += '(' + columns.map(f => `${f} like '%${w}%'`).join(' or ') + ')'
-  }
-
-  if ($where)
-    await render(res, $where)
-  else
-    res.write(`
-  <p>
-  <div class="alert alert-info fade show" role="alert">
-  Поиск идёт по словам. Служебные символы игнорируются
-  </div>
-      `)
-  head.tail(res)
-}
 
 async function render(res, $where) {
-
   var h = await sql()
   var q = h.request()
   q.query(`
