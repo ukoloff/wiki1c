@@ -4,73 +4,30 @@
 const mssql = require('mssql')
 const sql = require('./sql')
 const html = require('./h')
-const head = require('./head')
 const md = require('./md')
+const layout = require('./layout')
+const space = require('./space')
+const sql2it = require('./sql2it')
 
 module.exports = render
 
 async function render(res, page) {
-  head(res, page.title)
+  layout(res, page.title, content)
 
-  await breadcrumbs(res, page)
-
-  if (page.ccount) {
-    await renderChildren(res, page)
-    if (page.md) res.write('<hr>')
-  }
-
-  if (page.md) res.write(md(await fixURLs(page)))
-
-  head.tail(res)
-}
-
-async function renderChildren(res, page) {
-  var h = await sql()
-
-  await new Promise(run)
-
-  function run(resolve, reject) {
-    res.write('<ul class="list-group">')
-    var q = h.request()
-    q.stream = true
-    q
-      .on('row', row => {
-        res.write(`<li class="list-group-item"><a href=../${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
-      })
-      .on('done', _ => {
-        res.write('</ul>')
-        resolve()
-      })
-      .on('error', reject)
-      .input('pid', mssql.Binary, page.id)
-      .query(`
-        with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
-          select id, title
-          from pagez
-          where up = @pid
-          order by title
-        `)
+  async function content() {
+    await breadcrumbs(res, page)
+    if (page.md)
+      res.write(md(await fixURLs(page)))
   }
 }
 
 async function breadcrumbs(res, page) {
   res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
+  res.write(`<li class="breadcrumb-item"><a href="${res.$base}">${await space()}</a></li>\n`)
 
   var h = await sql()
-  var r = await h.request()
-    .input('pid', mssql.Binary, page.id)
-    .query(`
-      with ${sql.pages}, ${sql.spaces}
-      select
-        S.name
-      from
-        pages P join spaces S on P.space_id = S.id
-      where
-        P.id = @pid
-      `)
-  res.write(`<li class="breadcrumb-item"><a href="..">${r.recordset[0].name}</a></li>\n`)
-
-  r = await h.request()
+  q = h.request()
+  q
     .input('pid', mssql.Binary, page.id)
     .query(`
       with ${sql.pages},
@@ -98,18 +55,14 @@ async function breadcrumbs(res, page) {
           id, title
       from
           tower
-      where
-          lvl > 0
       order by
           lvl desc
-
     `)
-  for (var row of r.recordset) {
-    res.write(`<li class="breadcrumb-item"><a href="../${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
-  }
 
-  res.write(`<li class="breadcrumb-item active"><u>${page.title}</u>
-    <a href="../q/" title="Поиск по всей Базе Знаний" class="badge text-bg-info">?</a></li></ol></nav>`)
+  for await (var row of sql2it(q)) {
+    res.write(`<li class="breadcrumb-item">${html(row.title)}</li>\n`)
+  }
+  res.write(`</ol></nav>`)
 }
 
 async function fixURLs(page) {
@@ -129,9 +82,10 @@ async function fixURLs(page) {
         and basename like '% %'
       `)
   var md = page.md
-  r.recordset.map( x => x[0]).forEach(f =>{
-    md = md.replaceAll(`](${f})`, `](<${f}>)`)
-    md = md.replaceAll(`](/${f})`, `](<${f}>)`)
+  r.recordset.map(x => x[0]).forEach(f => {
+    md = md
+      .replaceAll(`](${f})`, `](<${f}>)`)
+      .replaceAll(`](/${f})`, `](<${f}>)`)
   })
   return md
 }

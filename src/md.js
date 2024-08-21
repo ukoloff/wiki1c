@@ -21,6 +21,8 @@ function md(md) {
 
   mdx.renderer.rules.image = function (tokens, idx, options, env, self) {
     fixHref(tokens[idx], 'src')
+    tokens[idx].attrSet('class', 'img-fluid')
+
     return defI(tokens, idx, options, env, self);
   }
 

@@ -1,0 +1,33 @@
+:root {
+  --split-ratio: 25%;
+}
+
+body>div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
+body>div:nth-child(1) {
+  left: 0;
+  width: var(--split-ratio);
+  white-space: nowrap;
+}
+
+body>div:nth-child(2) {
+  left: var(--split-ratio);
+  right: 0;
+}
+
+body>div:nth-child(3) {
+  background: blue;
+  left: var(--split-ratio);
+  width: 0;
+  border: 2px solid navy;
+  cursor: w-resize;
+}
+
+details>div:last-child {
+  margin-left: 1em;
+}
