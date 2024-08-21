@@ -3,6 +3,7 @@ const oops = require('./404')
 const getpage = require('./getpage')
 const renderpage = require('./rpage')
 const renderfile = require('./rfile')
+const assets = require('./assets')
 
 module.exports = route
 
@@ -13,6 +14,10 @@ async function route(req, res) {
   if (/^\/($|\?)/.test(path)) {
     home(res)
     return
+  }
+
+  if (/^\/assets\/.*/.test(path)) {
+    return assets(res)
   }
 
   var $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
