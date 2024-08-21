@@ -57,6 +57,7 @@ async function render(res, $where) {
       select id, title
       from pagez
       where ${$where}
+        and md is not null
       order by title
       `)
 
