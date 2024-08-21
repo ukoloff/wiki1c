@@ -29,7 +29,6 @@ async function search(res) {
   res.write(`<li class="breadcrumb-item"><a href="${res.$base}">${html(await space())}</a></li>`)
   res.write('<li class="breadcrumb-item active">Поиск</li></ol></nav><ul>\n')
 
-
   res.write(`
     <form>
     <input type="search"${$where ? '' : 'autofocus'} required name="q" value="${html(q)}" />
@@ -48,7 +47,6 @@ async function search(res) {
     </div>
 `
       .trim())
-
 }
 
 async function render(res, $where) {

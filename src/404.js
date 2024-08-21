@@ -3,6 +3,7 @@
 //
 const layout = require('./layout')
 const html = require('./h')
+const space = require('./space')
 
 module.exports = oops
 
@@ -10,11 +11,15 @@ function oops(res) {
   layout(res, 'Страница не найдена', contents)
 }
 
-function contents(res) {
+async function contents(res) {
+  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
+  res.write(`<li class="breadcrumb-item"><a href="${res.$base}">${html(await space())}</a></li>`)
+  res.write('<li class="breadcrumb-item active">Ошибка</li></ol></nav><ul>\n')
+
   res.write(`
-    <h2>
+    <div class="alert alert-danger">
     Страница ${html((res.$base + res.req.url).replace(/\/{2,}/, '/'))} не найдена на сервере!
-    </h2>
+    </div>
     <div class="text-center">
     <a class="btn btn-info" href="${res.$base}">Домой</a>
     </div>
