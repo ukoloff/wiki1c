@@ -8,6 +8,7 @@ const space = require('./space')
 module.exports = oops
 
 function oops(res) {
+  res.statusCode = 404
   layout(res, 'Страница не найдена', contents)
 }
 

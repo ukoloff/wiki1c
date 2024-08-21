@@ -1,8 +1,6 @@
 //
 // HTML template
 //
-const fs = require('node:fs/promises')
-const path = require('node:path')
 const tree = require('./tree')
 
 module.exports = layout
@@ -13,13 +11,9 @@ async function layout(res, title, content) {
 <!DOCTYPE html><html><head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-<link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/simplex/bootstrap.min.css" rel="stylesheet">
-<style>
-${await fs.readFile(path.join(__dirname, '../assets/kb.css'))}
-</style>
-<script>
-${await fs.readFile(path.join(__dirname, '../assets/kb.js'))}
-</script>
+<link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/journal/bootstrap.min.css" rel="stylesheet">
+<link href="${res.$base}assets/kb.css" rel="stylesheet">
+<script src="${res.$base}assets/kb.js"></script>
 </head>
 <body>
 <div><div class="container-fluid">
