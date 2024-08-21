@@ -33,10 +33,9 @@ async function tree(res) {
 
   function render(rows, level = 1) {
     if (!rows.length) return
-    res.write('<ul class="list-group">')
     for (var row of rows) {
       if (row.leaf) {
-        res.write(`<li class="list-group-item" title="${html(row.title)}"><a href="${res.$base}${row.id}/">${html(row.title)}</a></li>`)
+        res.write(`<div title="${html(row.title)}"><a href="${res.$base}${row.id}/">${html(row.title)}</a></div>`)
         continue
       }
       res.write(`<details name="$${level}" id=":${row.id}">\n<summary title="${html(row.title)}">${html(row.title)}</summary>\n`)
@@ -47,7 +46,6 @@ async function tree(res) {
       }
       res.write('</details>')
     }
-    res.write('</ul>')
   }
   render(root.c)
 }
