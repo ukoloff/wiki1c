@@ -6,6 +6,8 @@ const sql = require('./sql')
 const html = require('./h')
 const md = require('./md')
 const layout = require('./layout')
+const space = require('./space')
+const sql2it = require('./sql2it')
 
 module.exports = render
 
@@ -13,49 +15,17 @@ async function render(res, page) {
   layout(res, page.title, content)
 
   async function content() {
+    await breadcrumbs(res, page)
     if (page.md)
       res.write(md(await fixURLs(page)))
   }
 }
 
-async function renderChildren(res, page) {
-  var h = await sql()
-  var q = h.request()
-  q
-    .input('pid', mssql.Binary, page.id)
-    .query(`
-      with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
-        select id, title
-        from pagez
-        where up = @pid
-        order by title
-      `)
-
-  res.write('<ul class="list-group">')
-  for await (let row of sql2it(q)) {
-    res.write(`<li class="list-group-item"><a href=${res.$base}${row.id.toString('hex')}/>${html(row.title)}</a></li>\n`)
-  }
-  res.write('</ul>')
-}
-
 async function breadcrumbs(res, page) {
+  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
+  res.write(`<li class="breadcrumb-item"><a href="${res.$base}">${await space()}</a></li>\n`)
 
   var h = await sql()
-  var r = await h.request()
-    .input('pid', mssql.Binary, page.id)
-    .query(`
-      with ${sql.pages}, ${sql.spaces}
-      select
-        S.name
-      from
-        pages P join spaces S on P.space_id = S.id
-      where
-        P.id = @pid
-      `)
-
-  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
-  res.write(`<li class="breadcrumb-item"><a href="${res.$base}">${r.recordset[0].name}</a></li>\n`)
-
   q = h.request()
   q
     .input('pid', mssql.Binary, page.id)
@@ -85,19 +55,14 @@ async function breadcrumbs(res, page) {
           id, title
       from
           tower
-      where
-          lvl > 0
       order by
           lvl desc
-
     `)
 
   for await (var row of sql2it(q)) {
-    res.write(`<li class="breadcrumb-item"><a href="${res.$base}${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
+    res.write(`<li class="breadcrumb-item">${html(row.title)}</li>\n`)
   }
-
-  res.write(`<li class="breadcrumb-item active"><u>${page.title}</u>
-    <a href="${res.$base}q/" title="Поиск по всей Базе Знаний" class="badge text-bg-info">?</a></li></ol></nav>`)
+  res.write(`</ol></nav>`)
 }
 
 async function fixURLs(page) {
