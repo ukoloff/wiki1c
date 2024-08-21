@@ -18,7 +18,7 @@ async function search(res) {
   var q = qs.decode(url.parse(res.req.url).query).q || ''
 
   var $where = ''
-  for (var m of q.matchAll(/\p{L}+/ug)) {
+  for (var m of q.matchAll(/[\p{L}\d]+/ug)) {
     var w = m[0]
     if (w.length < 2) continue
     if ($where) $where += "\nand "
