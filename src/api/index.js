@@ -25,6 +25,7 @@ function read(stream) {
     var body = ''
     stream.on('data', chunk => body += chunk)
     stream.on('end', _ => resolve(body))
+    stream.on('error', reject)
   })
 }
 
