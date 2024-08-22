@@ -21,11 +21,12 @@ async function api(res) {
 }
 
 function read(stream) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     var body = ''
-    stream.on('data', chunk => body += chunk)
-    stream.on('end', _ => resolve(body))
-    stream.on('error', reject)
+    stream
+      .on('data', chunk => body += chunk)
+      .on('end', _ => resolve(body))
+      .on('error', reject)
   })
 }
 
