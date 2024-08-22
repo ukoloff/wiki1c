@@ -6,6 +6,7 @@ const getpage = require('./getpage')
 const renderpage = require('./rpage')
 const renderfile = require('./rfile')
 const assets = require('./assets')
+const api = require('./api')
 
 module.exports = route
 
@@ -20,6 +21,9 @@ async function route(req, res) {
     home(res)
     return
   }
+
+  if (path == '/api/' && req.method == 'POST')
+    return api(res)
 
   if (/^\/assets\/.*/.test(path)) {
     return assets(res)
