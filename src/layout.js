@@ -14,6 +14,7 @@ async function layout(res, title, content) {
 <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/journal/bootstrap.min.css" rel="stylesheet">
 <link href="${res.$base}assets/kb.css" rel="stylesheet">
 <script src="${res.$base}assets/kb.js"></script>
+<script src="${res.$base}assets/fetch.js" type="module"></script>
 </head>
 <body>
 <div><div class="container-fluid">
