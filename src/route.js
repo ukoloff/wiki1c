@@ -1,3 +1,5 @@
+require('dotenv/config')
+const fs = require('node:fs')
 const home = require('./home')
 const oops = require('./404')
 const getpage = require('./getpage')
@@ -11,6 +13,9 @@ async function route(req, res) {
   res.$base = `/${req.headers['x-forwarded-base'] || ''}/`.replace(/\/{2,}/g, '/')
 
   var path = req.url
+
+  if (process.env.LOG) log(`${new Date().toISOString()}\t${req.method}\t${path}`)
+
   if (/^\/($|\?)/.test(path)) {
     home(res)
     return
@@ -34,4 +39,10 @@ async function route(req, res) {
       renderpage(res, page)
   }
   oops(res)
+}
+
+function log(s) {
+  let log = fs.createWriteStream(process.env.LOG, { flags: 'a' })
+  log.write(s + '\n')
+  log.close()
 }
