@@ -11,7 +11,7 @@ async function api(res) {
   res.setHeader('Content-Type', 'application/json')
   read(res.req)
     .then(JSON.parse)
-    .then(dispatch.tree)
+    .then(data => (dispatch[data.command] || nop)(data))
     .catch(e => ({
       error: e.name,
       message: e.message
@@ -26,4 +26,12 @@ function read(stream) {
     stream.on('data', chunk => body += chunk)
     stream.on('end', _ => resolve(body))
   })
+}
+
+function nop(data) {
+  return {
+    error: 404,
+    message: 'Unknown command!',
+    back: data,
+  }
 }
