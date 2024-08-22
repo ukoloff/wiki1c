@@ -8,6 +8,7 @@ const md = require('./md')
 const layout = require('./layout')
 const space = require('./space')
 const sql2it = require('./sql2it')
+const decyfer = require('./decyfer')
 
 module.exports = render
 
@@ -60,7 +61,7 @@ async function breadcrumbs(res, page) {
     `)
 
   for await (var row of sql2it(q)) {
-    res.write(`<li class="breadcrumb-item">${html(row.title)}</li>\n`)
+    res.write(`<li class="breadcrumb-item">${html(decyfer(row.title))}</li>\n`)
   }
   res.write(`</ol></nav>`)
 }

@@ -3,6 +3,7 @@
 //
 const html = require('./h')
 const sql = require('./sql')
+const decyfer = require('./decyfer')
 
 module.exports = tree
 
@@ -23,6 +24,7 @@ async function tree(res) {
   r = r.recordset
   var idx = {}
   for (var row of r) {
+    row.title = decyfer(row.title)
     idx[row.id = row.id.toString('hex')] = row
     row.c = []
   }
