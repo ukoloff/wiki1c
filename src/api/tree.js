@@ -1,7 +1,7 @@
+const root = require('../model/tree')
+
 module.exports = tree
 
 async function tree(res) {
-  return {
-    answer: 6 * 7
-  }
+  return root()
 }
