@@ -1,6 +1,6 @@
 require('dotenv/config')
 const fs = require('node:fs')
-const home = require('./home')
+const home = require('./view/home')
 const oops = require('./view/404')
 const getpage = require('./model/getpage')
 const renderpage = require('./rpage')

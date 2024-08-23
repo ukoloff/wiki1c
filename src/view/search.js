@@ -3,27 +3,17 @@
 //
 const url = require('node:url')
 const qs = require('node:querystring')
-const html = require('./view/h')
-const sql = require('./sql')
-const sql2it = require('./sql2it')
-const layout = require('./view/layout')
-const space = require('./model/space')
+const html = require('./h')
+const layout = require('./layout')
+const space = require('../model/space')
+const model = require('../model/search')
 
 module.exports = search
-
-const
-  columns = 'title:lat:md'.split(':')
 
 async function search(res) {
   var q = qs.decode(url.parse(res.req.url).query).q || ''
 
-  var $where = ''
-  for (var m of q.matchAll(/[\p{L}\d]+/ug)) {
-    var w = m[0]
-    if (w.length < 2) continue
-    if ($where) $where += "\nand "
-    $where += '(' + columns.map(f => `${f} like '%${w}%'`).join(' or ') + ')'
-  }
+  const $where = model.prepare(q)
 
   res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
   res.write(`<li class="breadcrumb-item"><a href="${res.$base}">${html(await space())}</a></li>`)
@@ -38,7 +28,7 @@ async function search(res) {
     .trim())
 
   if ($where)
-    await render(res, $where)
+    await render(res, await model.feed($where))
   else
     res.write(`
     <p>
@@ -49,21 +39,10 @@ async function search(res) {
       .trim())
 }
 
-async function render(res, $where) {
-  var h = await sql()
-  var q = h.request()
-  q.query(`
-      with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
-      select id, title
-      from pagez
-      where ${$where}
-        and md is not null
-      order by title
-      `)
-
+async function render(res, iterator) {
   res.write('<ul class="list-group">')
   $N = 0;
-  for await (let row of sql2it(q)) {
+  for await (let row of iterator) {
     $N++
     res.write(`<li class="list-group-item"><a href="${res.$base}${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
   }
