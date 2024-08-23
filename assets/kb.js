@@ -8,6 +8,8 @@
 
   function ready() {
     let leftPane = document.querySelector('body>:first-child>*')
+    base = document.querySelector('script[src^="/"]').getAttribute('src').replace(/assets.*/, '')
+
     putLeftPane()
     loadLeftPane()
 
@@ -24,7 +26,6 @@
     }
 
     async function loadLeftPane() {
-      base = document.querySelector('script[src^="/"]').getAttribute('src').replace(/assets.*/, '')
       let res = await fetch(base + 'api/', {
         method: 'POST',
         body: JSON.stringify({
