@@ -1,11 +1,10 @@
 require('dotenv/config')
-cte = require('./cte')
+const sql = require('mssql')
+const cte = require('./model/cte')
 
 module.exports = connect
 
 function connect() {
-  const sql = require('mssql')
-
   return sql.connect({
     domain: process.env.DOM,
     user: process.env.USR,

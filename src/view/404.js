@@ -3,7 +3,7 @@
 //
 const layout = require('./layout')
 const html = require('./h')
-const space = require('./space')
+const bcz = require('./breadcz')
 
 module.exports = oops
 
@@ -13,9 +13,9 @@ function oops(res) {
 }
 
 async function contents(res) {
-  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
-  res.write(`<li class="breadcrumb-item"><a href="${res.$base}">${html(await space())}</a></li>`)
-  res.write('<li class="breadcrumb-item active">Ошибка</li></ol></nav><ul>\n')
+  await bcz.open(res)
+  await bcz.item(res, 'Ошибка', true)
+  await bcz.close(res)
 
   res.write(`
     <div class="alert alert-danger">
