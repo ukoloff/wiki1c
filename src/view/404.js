@@ -25,5 +25,5 @@ async function contents(res) {
     <a class="btn btn-info" href="${res.$base}">Домой</a>
     </div>
     `
-  .trim())
+    .trim())
 }

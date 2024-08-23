@@ -25,7 +25,6 @@ async function breadcrumbs(res, page) {
 
   for await (var row of await breadcx(page)) {
     await bcz.item(res, html(decyfer(row.title)), !row.lvl)
-    // res.write(`<li class="breadcrumb-item">${html(decyfer(row.title))}</li>\n`)
   }
   await bcz.close(res)
 }
