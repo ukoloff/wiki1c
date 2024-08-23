@@ -22,7 +22,7 @@ async function contents(res) {
     Страница ${html((res.$base + res.req.url).replace(/\/{2,}/, '/'))} не найдена на сервере!
     </div>
     <div class="text-center">
-    <a class="btn btn-info" href="${res.$base}">Домой</a>
+    <a class="btn btn-info" href="${res.$base}"><i class="fa fa-home fa-lg text-dark" aria-hidden="true"></i> Домой</a>
     </div>
     `
     .trim())
