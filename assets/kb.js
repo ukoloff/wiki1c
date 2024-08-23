@@ -31,6 +31,7 @@
         })
       })
       let data = await res.json()
+      localStorage.tree = JSON.stringify(data)
       let div = document.querySelector('body>:first-child>*')
       div.innerHTML = renderTree(data)
       div.querySelectorAll('details').forEach(el =>
