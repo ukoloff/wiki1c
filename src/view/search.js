@@ -33,6 +33,7 @@ async function search(res) {
     res.write(`
     <p>
     <div class="alert alert-info fade show" role="alert">
+    <i class="fa fa-warning fa-lg text-warning" aria-hidden="true"></i>
     Поиск идёт по словам. Служебные символы игнорируются
     </div>
 `
