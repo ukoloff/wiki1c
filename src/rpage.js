@@ -6,7 +6,7 @@ const sql = require('./sql')
 const html = require('./h')
 const md = require('./md')
 const layout = require('./layout')
-const space = require('./space')
+const space = require('./model/space')
 const sql2it = require('./sql2it')
 const decyfer = require('./decyfer')
 

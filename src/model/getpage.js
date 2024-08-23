@@ -1,7 +1,7 @@
 //
 // Search for KB Page by hexadecimal id
 //
-const sql = require('./sql')
+const sql = require('../sql')
 
 module.exports = find
 

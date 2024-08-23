@@ -1,9 +1,9 @@
 //
 // Page not found
 //
-const layout = require('./layout')
-const html = require('./h')
-const space = require('./space')
+const layout = require('../layout')
+const html = require('../h')
+const space = require('../model/space')
 
 module.exports = oops
 

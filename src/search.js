@@ -7,7 +7,7 @@ const html = require('./h')
 const sql = require('./sql')
 const sql2it = require('./sql2it')
 const layout = require('./layout')
-const space = require('./space')
+const space = require('./model/space')
 
 module.exports = search
 

@@ -1,7 +1,7 @@
 //
 // Get Space name
 //
-const sql = require('./sql')
+const sql = require('../sql')
 
 module.exports = space
 
