@@ -3,7 +3,7 @@
 //
 const html = require('./view/h')
 const sql = require('./sql')
-const decyfer = require('./decyfer')
+const decyfer = require('./model/decyfer')
 
 module.exports = tree
 

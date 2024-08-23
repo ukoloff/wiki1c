@@ -1,7 +1,7 @@
 //
 // Home page
 //
-const layout = require('./layout')
+const layout = require('./view/layout')
 const search = require('./search')
 
 module.exports = home

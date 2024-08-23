@@ -1,7 +1,7 @@
 //
 // Page not found
 //
-const layout = require('../layout')
+const layout = require('./layout')
 const html = require('./h')
 const space = require('../model/space')
 

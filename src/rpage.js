@@ -4,11 +4,11 @@
 const mssql = require('mssql')
 const sql = require('./sql')
 const html = require('./view/h')
-const md = require('./md')
-const layout = require('./layout')
+const md = require('./model/md')
+const layout = require('./view/layout')
 const space = require('./model/space')
 const sql2it = require('./sql2it')
-const decyfer = require('./decyfer')
+const decyfer = require('./model/decyfer')
 
 module.exports = render
 
