@@ -7,12 +7,7 @@
   document.addEventListener("DOMContentLoaded", ready, { once: true })
 
   function ready() {
-    leftPane()
-
-    if (localStorage.expand)
-      try {
-        JSON.parse(localStorage.expand).forEach(id => document.getElementById(id).open = true)
-      } catch (e) { }
+    loadLeftPane()
 
     var splitter = document.querySelector('body>:nth-child(3)')
 
@@ -22,7 +17,7 @@
 
     var fired = false
 
-    async function leftPane() {
+    async function loadLeftPane() {
       base = document.querySelector('script[src^="/"]').getAttribute('src').replace(/assets.*/, '')
       let res = await fetch(base + 'api/', {
         method: 'POST',
@@ -38,15 +33,16 @@
         el.addEventListener('toggle', updateExp))
     }
 
-    function renderTree(page, level = 1) {
+    function renderTree(page, state = expStatus(), level = 1) {
       return page.c
         .map(function (page) {
           if (page.leaf) {
             return `<div><a href="${base}${page.id}/">${h(page.title)}</a></div>`
           } else {
-            let result = `<details id=":${page.id}" name="$${level}"><summary title="${h(page.title)}">${h(page.title)}</summary>`
+            let result = `<details id=":${page.id}" name="$${level}"${state[':' + page.id] ? ' open' : ''
+              }><summary title="${h(page.title)}">${h(page.title)}</summary>`
             if (page.c.length > 0) {
-              result += '<div>' + renderTree(page, level + 1) + '</div>'
+              result += '<div>' + renderTree(page, state, level + 1) + '</div>'
             }
             return result + '</details>'
           }
@@ -83,5 +79,19 @@
 
   function h(s) {
     return String(s).replace(/[&<>"]/g, e => htmlEntities[e])
+  }
+
+  function json(text) {
+    try {
+      return JSON.parse(text)
+    } catch (e) { }
+  }
+
+  function expStatus() {
+    let result = {}
+    for (let id of json(localStorage.expand || [])) {
+      result[id] = 1
+    }
+    return result
   }
 })()
