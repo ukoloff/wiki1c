@@ -27,7 +27,10 @@ async function tree(res) {
     idx[row.id = row.id.toString('hex')] = row
     row.c = []
   }
-  var root = { c: [] }
+  var root = {
+    count: r.length,
+    c: []
+  }
   for (var row of r) {
     (idx[row.up = row.up.toString('hex')] || root).c.push(row)
   }
