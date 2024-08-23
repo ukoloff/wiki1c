@@ -103,7 +103,7 @@
 
   function expStatus() {
     let result = {}
-    for (let id of json(localStorage.expand || [])) {
+    for (let id of json(localStorage.expand) || []) {
       result[id] = 1
     }
     return result
