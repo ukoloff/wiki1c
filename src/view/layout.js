@@ -1,7 +1,7 @@
 //
 // HTML template
 //
-const tree = require('../tree')
+const tree = require('./tree')
 
 module.exports = layout
 
