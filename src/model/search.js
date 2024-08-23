@@ -2,7 +2,7 @@
 // Prepare & search for KB pages
 //
 const sql = require('../sql')
-const sql2it = require('../sql2it')
+const sql2it = require('../util/sql2it')
 
 exports.prepare = prepare
 exports.feed = feed

@@ -7,7 +7,7 @@ const html = require('./view/h')
 const md = require('./model/md')
 const layout = require('./view/layout')
 const space = require('./model/space')
-const sql2it = require('./sql2it')
+const sql2it = require('./util/sql2it')
 const decyfer = require('./model/decyfer')
 
 module.exports = render

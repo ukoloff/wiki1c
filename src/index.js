@@ -16,10 +16,10 @@ if (cluster.isPrimary) {
   });
 
   if (process.argv.includes("-debug")) {
-    require('./watch')
+    require('./util/watch')
   }
 
 } else {
   console.log("WORKER:", process.pid)
-  require("./worker")
+  require("./util/worker")
 }
