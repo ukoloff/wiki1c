@@ -1,8 +1,8 @@
 require('dotenv/config')
 const fs = require('node:fs')
+const getpage = require('./model/getpage')
 const home = require('./view/home')
 const oops = require('./view/404')
-const getpage = require('./model/getpage')
 const article = require('./view/article')
 const attachment = require('./view/attachment')
 const assets = require('./view/assets')
@@ -13,23 +13,20 @@ module.exports = route
 async function route(req, res) {
   res.$base = `/${req.headers['x-forwarded-base'] || ''}/`.replace(/\/{2,}/g, '/')
 
-  var path = req.url
+  let path = req.url
 
   if (process.env.LOG) log(`${new Date().toISOString()}\t${req.method}\t${path}`)
 
-  if (/^\/($|\?)/.test(path)) {
-    home(res)
-    return
-  }
+  if (/^\/($|\?)/.test(path))
+    return home(res)
 
   if (path == '/api/' && req.method == 'POST')
     return api(res)
 
-  if (/^\/assets\/.*/.test(path)) {
+  if (/^\/assets\/.*/.test(path))
     return assets(res)
-  }
 
-  var $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
+  let $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
     if (!$m[2]) {
       res.writeHead(301, { Location: $m[1] + '/' })
