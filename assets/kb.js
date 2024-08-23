@@ -19,7 +19,6 @@
     splitter.addEventListener('mousedown', click)
     window.addEventListener("mousemove", move)
     window.addEventListener("mouseup", up)
-    window.addEventListener("unload", unload)
 
     var fired = false
 
@@ -32,7 +31,10 @@
         })
       })
       let data = await res.json()
-      document.querySelector('body>:first-child>*').innerHTML = renderTree(data)
+      let div = document.querySelector('body>:first-child>*')
+      div.innerHTML = renderTree(data)
+      div.querySelectorAll('details').forEach(el =>
+        el.addEventListener('toggle', updateExp))
     }
 
     function renderTree(page, level = 1) {
@@ -43,7 +45,7 @@
           } else {
             let result = `<details id=":${page.id}" name="$${level}"><summary title="${h(page.title)}">${h(page.title)}</summary>`
             if (page.c.length > 0) {
-              result += '<div>' + renderTree(page) + '</div>'
+              result += '<div>' + renderTree(page, level + 1) + '</div>'
             }
             return result + '</details>'
           }
@@ -70,7 +72,7 @@
       fired = false
     }
 
-    function unload() {
+    function updateExp() {
       var list = []
       document.querySelectorAll('details[open]').forEach(z => list.push(z.id))
       localStorage.expand = JSON.stringify(list)
