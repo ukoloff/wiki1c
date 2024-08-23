@@ -28,16 +28,19 @@
       let res = await fetch(base + 'api/', {
         method: 'POST',
         body: JSON.stringify({
-          command: 'tree'
+          command: 'tree',
+          hash: (json(localStorage.tree) || {}).hash
         })
       })
       let data = await res.json()
+      if (data.the == 'same')
+        return
       localStorage.tree = JSON.stringify(data)
       renderLeftPane(data)
     }
 
     function renderLeftPane(tree) {
-      if (!tree)
+      if (!tree || !tree.c)
         return
       leftPane.innerHTML = renderTree(tree)
       leftPane.querySelectorAll('details').forEach(el =>
@@ -48,7 +51,7 @@
       return page.c
         .map(function (page) {
           if (page.leaf) {
-            return `<div><a href="${base}${page.id}/">${h(page.title)}</a></div>`
+            return `<div><a href="${base}${page.id}/" title="${h(page.title)}">${h(page.title)}</a></div>`
           } else {
             let result = `<details id=":${page.id}" name="$${level}"${state[':' + page.id] ? ' open' : ''
               }><summary title="${h(page.title)}">${h(page.title)}</summary>`
