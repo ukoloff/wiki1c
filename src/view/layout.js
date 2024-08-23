@@ -16,7 +16,7 @@ async function layout(res, title, content) {
 </head>
 <body>
 <div><div class="container-fluid">
-<div class="text-center">Загрузка...</div>
+<div class="text-center"><i class="fa fa-refresh fa-spin fa-lg fa-fw text-info"></i> Загрузка...</div>
 `
     .trim())
   res.write(`</div></div><div><div class="container-fluid">`)
