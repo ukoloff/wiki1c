@@ -5,7 +5,7 @@ const url = require('node:url')
 const qs = require('node:querystring')
 const html = require('./h')
 const layout = require('./layout')
-const space = require('../model/space')
+const bcz = require('./breadcz')
 const model = require('../model/search')
 
 module.exports = search
@@ -15,9 +15,9 @@ async function search(res) {
 
   const $where = model.prepare(q)
 
-  res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
-  res.write(`<li class="breadcrumb-item"><a href="${res.$base}">${html(await space())}</a></li>`)
-  res.write('<li class="breadcrumb-item active">Поиск</li></ol></nav><ul>\n')
+  await bcz.open(res)
+  await bcz.item(res, 'Поиск', true)
+  await bcz.close(res)
 
   res.write(`
     <form>

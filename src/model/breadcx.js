@@ -35,7 +35,7 @@ async function breadcx(page) {
               join tower on P.id = tower.up
       )
       select
-          id, title
+          id, title, lvl
       from
           tower
       order by
