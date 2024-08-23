@@ -1,8 +1,6 @@
 //
 // HTML template
 //
-const tree = require('./tree')
-
 module.exports = layout
 
 async function layout(res, title, content) {
@@ -17,9 +15,9 @@ async function layout(res, title, content) {
 </head>
 <body>
 <div><div class="container-fluid">
+<div class="text-center">Загрузка...</div>
 `
     .trim())
-  await tree(res)
   res.write(`</div></div><div><div class="container-fluid">`)
   await content(res)
   res.write(`</div></div><div></div></body></html>`)

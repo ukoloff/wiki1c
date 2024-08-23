@@ -1,10 +1,14 @@
 !(function () {
+  let base = "/"
+
   if (localStorage.split)
     document.documentElement.style.setProperty('--split-ratio', localStorage.split + '%')
 
   document.addEventListener("DOMContentLoaded", ready, { once: true })
 
   function ready() {
+    leftPane()
+
     if (localStorage.expand)
       try {
         JSON.parse(localStorage.expand).forEach(id => document.getElementById(id).open = true)
@@ -18,6 +22,34 @@
     window.addEventListener("unload", unload)
 
     var fired = false
+
+    async function leftPane() {
+      base = document.querySelector('script[src^="/"]').getAttribute('src').replace(/assets.*/, '')
+      let res = await fetch(base + 'api/', {
+        method: 'POST',
+        body: JSON.stringify({
+          command: 'tree'
+        })
+      })
+      let data = await res.json()
+      document.querySelector('body>:first-child>*').innerHTML = renderTree(data)
+    }
+
+    function renderTree(page, level = 1) {
+      return page.c
+        .map(function (page) {
+          if (page.leaf) {
+            return `<div><a href="${base}${page.id}/">${h(page.title)}</a></div>`
+          } else {
+            let result = `<details id=":${page.id}" name="$${level}"><summary title="${h(page.title)}">${h(page.title)}</summary>`
+            if (page.c.length > 0) {
+              result += '<div>' + renderTree(page) + '</div>'
+            }
+            return result + '</details>'
+          }
+        })
+        .join('')
+    }
 
     function click(ev) {
       if (fired) return
@@ -43,5 +75,10 @@
       document.querySelectorAll('details[open]').forEach(z => list.push(z.id))
       localStorage.expand = JSON.stringify(list)
     }
+  }
+  var htmlEntities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }
+
+  function h(s) {
+    return String(s).replace(/[&<>"]/g, e => htmlEntities[e])
   }
 })()
