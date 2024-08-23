@@ -3,7 +3,7 @@ const fs = require('node:fs')
 const home = require('./view/home')
 const oops = require('./view/404')
 const getpage = require('./model/getpage')
-const renderpage = require('./rpage')
+const article = require('./view/article')
 const attachment = require('./view/attachment')
 const assets = require('./view/assets')
 const api = require('./api')
@@ -40,7 +40,7 @@ async function route(req, res) {
     if (!page) return oops(res)
     return $m[3] ?
       attachment(res, page, decodeURIComponent($m[3])) :
-      renderpage(res, page)
+      article(res, page)
   }
   oops(res)
 }
