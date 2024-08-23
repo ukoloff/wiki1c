@@ -1,9 +1,11 @@
-const cluster = require('node:cluster');
-const numCPUs = require('node:os').availableParallelism();
-const process = require('node:process');
+const cluster = require('node:cluster')
+const os = require('node:os')
+const process = require('node:process')
+require('dotenv/config')
 
 if (cluster.isPrimary) {
-  console.log("MAIN:", process.pid)
+  const numCPUs = parseInt(process.env.NUM) || os.availableParallelism()
+  console.log(`MAIN<${numCPUs}>: ${process.pid}`)
   for (let i = 0; i < numCPUs; i++) {
     cluster.fork();
   }
