@@ -7,6 +7,8 @@
   document.addEventListener("DOMContentLoaded", ready, { once: true })
 
   function ready() {
+    let leftPane = document.querySelector('body>:first-child>*')
+    putLeftPane()
     loadLeftPane()
 
     var splitter = document.querySelector('body>:nth-child(3)')
@@ -16,6 +18,10 @@
     window.addEventListener("mouseup", up)
 
     var fired = false
+
+    function putLeftPane() {
+      renderLeftPane(json(localStorage.tree))
+    }
 
     async function loadLeftPane() {
       base = document.querySelector('script[src^="/"]').getAttribute('src').replace(/assets.*/, '')
@@ -27,9 +33,14 @@
       })
       let data = await res.json()
       localStorage.tree = JSON.stringify(data)
-      let div = document.querySelector('body>:first-child>*')
-      div.innerHTML = renderTree(data)
-      div.querySelectorAll('details').forEach(el =>
+      renderLeftPane(data)
+    }
+
+    function renderLeftPane(tree) {
+      if (!tree)
+        return
+      leftPane.innerHTML = renderTree(tree)
+      leftPane.querySelectorAll('details').forEach(el =>
         el.addEventListener('toggle', updateExp))
     }
 
