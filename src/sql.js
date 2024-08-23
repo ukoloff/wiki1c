@@ -1,5 +1,5 @@
 require('dotenv/config')
-cte = require('./cte')
+cte = require('./model/cte')
 
 module.exports = connect
 

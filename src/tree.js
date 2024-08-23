@@ -1,7 +1,7 @@
 //
 // View all pages as tree
 //
-const html = require('./h')
+const html = require('./view/h')
 const sql = require('./sql')
 const decyfer = require('./decyfer')
 
