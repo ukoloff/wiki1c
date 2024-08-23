@@ -5,7 +5,7 @@ const oops = require('./view/404')
 const getpage = require('./model/getpage')
 const renderpage = require('./rpage')
 const renderfile = require('./rfile')
-const assets = require('./assets')
+const assets = require('./view/assets')
 const api = require('./api')
 
 module.exports = route
