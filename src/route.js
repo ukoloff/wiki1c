@@ -4,7 +4,7 @@ const home = require('./view/home')
 const oops = require('./view/404')
 const getpage = require('./model/getpage')
 const renderpage = require('./rpage')
-const renderfile = require('./rfile')
+const attachment = require('./view/attachment')
 const assets = require('./view/assets')
 const api = require('./api')
 
@@ -39,7 +39,7 @@ async function route(req, res) {
     var page = await getpage($m[1])
     if (!page) return oops(res)
     return $m[3] ?
-      renderfile(res, page, decodeURIComponent($m[3])) :
+      attachment(res, page, decodeURIComponent($m[3])) :
       renderpage(res, page)
   }
   oops(res)
