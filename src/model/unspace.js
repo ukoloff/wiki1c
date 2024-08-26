@@ -7,7 +7,8 @@ const sql2it = require('../util/sql2it')
 
 module.exports = unspace
 
-async function unspace(page) {
+async function unspace($) {
+  let page = $.page
   if (!page.md)
     return ''
   var h = await sql()

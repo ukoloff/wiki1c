@@ -13,22 +13,25 @@ const shorten = require('../model/shorten')
 
 module.exports = render
 
-async function render(res, page) {
-  layout(res, page.title, content)
-
-  async function content() {
-    await breadcrumbs(res, page)
-    let x = await shorten(page.id)
-    res.write(`<!-- min page id: ${page.id.slice(0, x).toString('hex')} -->\n`)
-    res.write(md(await unspace(page)))
-  }
+async function render($) {
+  let res = $.res
+  $.content = content
+  layout($, $.page.title)
 }
 
-async function breadcrumbs(res, page) {
-  await bcz.open(res)
+async function content($) {
+  let res = $.res
+  await breadcrumbs($)
+  let x = await shorten($.page.id)
+  res.write(`<!-- min page id: ${$.page.id.slice(0, x).toString('hex')} -->\n`)
+  res.write(md(await unspace($)))
+}
 
-  for await (var row of await breadcx(page)) {
-    await bcz.item(res, html(decyfer(row.title)), !row.lvl)
+async function breadcrumbs($) {
+  await bcz.open($)
+
+  for await (var row of await breadcx($)) {
+    await bcz.item($, html(decyfer(row.title)), !row.lvl)
   }
-  await bcz.close(res)
+  await bcz.close($)
 }
