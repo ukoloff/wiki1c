@@ -37,12 +37,12 @@ async function route(req, res) {
       return
     }
     var page = await getpage($m[1])
-    if (!page) return oops(res)
+    if (!page) return oops($)
     return $m[3] ?
       attachment(res, page, decodeURIComponent($m[3])) :
       article(res, page)
   }
-  oops(res)
+  oops($)
 }
 
 function log(s) {
