@@ -1,5 +1,6 @@
 const test = require('node:test')
 const sql = require('../src/sql')
+const setspace = require('../src/model/setspace')
 
 test('Connect to MS SQL', async function (t) {
   var q = await sql()
@@ -22,6 +23,8 @@ test('List all articles', async function (t) {
 })
 
 test('List articles', async function (t) {
+  $ = {}
+  setspace($)
   var q = await sql()
 
   var r = await q.request().query(`

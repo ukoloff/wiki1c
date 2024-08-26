@@ -1,6 +1,7 @@
 require('dotenv/config')
 const fs = require('node:fs')
 const getpage = require('./model/getpage')
+const setspace = require('./model/setspace')
 const home = require('./view/home')
 const oops = require('./view/404')
 const article = require('./view/article')
@@ -15,6 +16,7 @@ async function route(req, res) {
     res, req,
     base: `/${req.headers['x-forwarded-base'] || ''}/`.replace(/\/{2,}/g, '/')
   }
+  setspace($)
 
   let path = req.url
 
