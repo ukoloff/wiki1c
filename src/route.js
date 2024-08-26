@@ -27,7 +27,7 @@ async function route(req, res) {
     return api($)
 
   if (/^\/assets\/.*/.test(path))
-    return assets(res)
+    return assets($)
 
   let $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
