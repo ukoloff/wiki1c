@@ -9,6 +9,8 @@ const decyfer = require('../model/decyfer')
 const breadcx = require('../model/breadcx')
 const unspace = require('../model/unspace')
 
+const shorten = require('../model/shorten')
+
 module.exports = render
 
 async function render(res, page) {
@@ -16,6 +18,8 @@ async function render(res, page) {
 
   async function content() {
     await breadcrumbs(res, page)
+    let x = await shorten(page.id)
+    res.write(`<!-- min page id: ${page.id.slice(0, x).toString('hex')} -->\n`)
     res.write(md(await unspace(page)))
   }
 }
