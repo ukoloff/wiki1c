@@ -6,8 +6,8 @@ const root = require('../model/tree')
 
 module.exports = tree
 
-async function tree(res) {
-  let r = await root()
+async function tree($) {
+  let r = await root($)
 
   function render(rows, level = 1) {
     if (!rows.length) return

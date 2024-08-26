@@ -6,7 +6,7 @@ const decyfer = require('./decyfer')
 
 module.exports = tree
 
-async function tree(res) {
+async function tree($) {
   var h = await sql()
   var r = await h.request().query(`
       with ${sql.pages}, ${sql.spaces}, ${sql.pagez}

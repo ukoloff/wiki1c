@@ -5,7 +5,7 @@ const sql = require('../sql')
 
 module.exports = space
 
-async function space() {
+async function space($) {
   var h = await sql()
   var r = await h.request()
    .query(`
