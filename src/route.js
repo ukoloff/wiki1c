@@ -11,17 +11,20 @@ const api = require('./api')
 module.exports = route
 
 async function route(req, res) {
-  res.$base = `/${req.headers['x-forwarded-base'] || ''}/`.replace(/\/{2,}/g, '/')
+  let $ = {
+    res, req,
+    base: `/${req.headers['x-forwarded-base'] || ''}/`.replace(/\/{2,}/g, '/')
+  }
 
   let path = req.url
 
   if (process.env.LOG) log(`${new Date().toISOString()}\t${req.method}\t${path}`)
 
   if (/^\/($|\?)/.test(path))
-    return home(res)
+    return home($)
 
   if (path == '/api/' && req.method == 'POST')
-    return api(res)
+    return api($)
 
   if (/^\/assets\/.*/.test(path))
     return assets(res)

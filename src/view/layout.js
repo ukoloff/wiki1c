@@ -3,8 +3,9 @@
 //
 module.exports = layout
 
-async function layout(res, title, content) {
-  let assets = res.$base + 'assets/'
+async function layout($, title = 'База знаний') {
+  let assets = $.base + 'assets/'
+  let res = $.res
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
   res.write(`
 <!DOCTYPE html><html><head>
@@ -21,7 +22,7 @@ async function layout(res, title, content) {
 `
     .trim())
   res.write(`</div></div><div><div class="container-fluid">`)
-  await content(res)
+  await $.content($)
   res.write(`</div></div><div></div></body></html>`)
   res.end()
 }

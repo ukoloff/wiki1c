@@ -10,14 +10,15 @@ const model = require('../model/search')
 
 module.exports = search
 
-async function search(res) {
+async function search($) {
+  let res = $.res
   var q = qs.decode(url.parse(res.req.url).query).q || ''
 
   const $where = model.prepare(q)
 
-  await bcz.open(res)
-  await bcz.item(res, 'Поиск', true)
-  await bcz.close(res)
+  await bcz.open($)
+  await bcz.item($, 'Поиск', true)
+  await bcz.close($)
 
   res.write(`
     <form>
@@ -28,7 +29,7 @@ async function search(res) {
     .trim())
 
   if ($where)
-    await render(res, await model.feed($where))
+    await render(res, await model.feed($, $where))
   else
     res.write(`
     <p>

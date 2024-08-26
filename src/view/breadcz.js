@@ -8,15 +8,16 @@ exports.open = open
 exports.close = close
 exports.item = item
 
-async function open(res) {
+async function open($) {
+  let res = $.res
   res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
-  await item(res, `<a href="${res.$base}">${html(await space())}</a>`)
+  await item($, `<a href="${$.base}">${html(await space())}</a>`)
 }
 
-async function close(res) {
-  res.write('</ol></nav>\n')
+async function close($) {
+  $.res.write('</ol></nav>\n')
 }
 
-async function item(res, html, active = false) {
-  res.write(`<li class="breadcrumb-item${active ? ' active' : ''}">${html}</li>\n`)
+async function item($, html, active = false) {
+  $.res.write(`<li class="breadcrumb-item${active ? ' active' : ''}">${html}</li>\n`)
 }

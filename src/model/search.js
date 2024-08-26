@@ -21,7 +21,7 @@ function prepare(str) {
   return $where
 }
 
-async function feed($where) {
+async function feed($, $where) {
   if (!$where)
     return none()
   var h = await sql()
