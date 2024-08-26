@@ -40,7 +40,7 @@ async function route(req, res) {
     if (!page) return oops($)
     $.page = page
     return $m[3] ?
-      attachment(res, page, decodeURIComponent($m[3])) :
+      attachment($, decodeURIComponent($m[3])) :
       article($)
   }
   oops($)

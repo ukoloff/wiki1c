@@ -7,8 +7,9 @@ const find = require('../model/attachment')
 
 module.exports = render
 
-async function render(res, page, name) {
-  let r = await find(page, name)
+async function render($, name) {
+  let res = $.res
+  let r = await find($, name)
   if (!r) {
     res.statusCode = 404
     res.end()

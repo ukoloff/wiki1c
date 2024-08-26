@@ -6,12 +6,12 @@ const sql = require('../sql')
 
 module.exports = find
 
-async function find(page, name) {
+async function find($, name) {
   $m = /^(.*?)(?:[.]([^.]*))?$/.exec(name)
 
   const h = await sql()
   var r = await h.request()
-    .input('pid', mssql.Binary, page.id)
+    .input('pid', mssql.Binary, $.page.id)
     .input('base', mssql.NVarChar, $m[1])
     .input('ext', mssql.NVarChar, $m[2] || '')
     .query(`
