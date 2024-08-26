@@ -4,15 +4,16 @@
 module.exports = layout
 
 async function layout(res, title, content) {
+  let assets = res.$base + 'assets/'
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
   res.write(`
 <!DOCTYPE html><html><head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-<link href="${res.$base}assets/bootswatch/litera/bootstrap.min.css" rel="stylesheet">
-<link href="${res.$base}assets/fa/css/font-awesome.min.css" rel="stylesheet">
-<link href="${res.$base}assets/kb.css" rel="stylesheet">
-<script src="${res.$base}assets/kb.js"></script>
+<link href="${assets}bootswatch/litera/bootstrap.min.css" rel="stylesheet">
+<link href="${assets}fa/css/font-awesome.min.css" rel="stylesheet">
+<link href="${assets}kb.css" rel="stylesheet">
+<script src="${assets}kb.js"></script>
 </head>
 <body>
 <div><div class="container-fluid">
