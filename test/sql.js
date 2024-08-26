@@ -25,7 +25,7 @@ test('List articles', async function (t) {
   var q = await sql()
 
   var r = await q.request().query(`
-    with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+    with ${sql.pages}, ${sql.spaces}, ${sql.pagez($)}
     Select
         *
     From

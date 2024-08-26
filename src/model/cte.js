@@ -37,7 +37,7 @@ exports.spaces = `
       _Reference174
 `
 
-exports.pagez = `
+exports.pagez = $ => `
   select
       *
   from

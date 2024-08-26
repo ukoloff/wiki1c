@@ -5,7 +5,7 @@ const sql = require('../sql')
 
 module.exports = find
 
-async function find(id) {
+async function find($, id) {
   var h = await sql()
 
   var $where = ''
@@ -14,10 +14,10 @@ async function find(id) {
     $where = `substring(convert(nvarchar, id, 2), ${L}, 1) = '${id.slice(-1).toUpperCase()}' and `
     L--
   }
-  $where += `substring(id, 1, ${L/2}) = 0x${id.slice(0, L)}`
+  $where += `substring(id, 1, ${L / 2}) = 0x${id.slice(0, L)}`
 
   var r = await h.request().query(`
-    with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+    with ${sql.pages}, ${sql.spaces}, ${sql.pagez($)}
     select top 2
       *,
       (select count(*) from pagez X where X.up=Z.id) as ccount

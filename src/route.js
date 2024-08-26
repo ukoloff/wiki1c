@@ -36,7 +36,7 @@ async function route(req, res) {
         .end()
       return
     }
-    var page = await getpage($m[1])
+    var page = await getpage($, $m[1])
     if (!page) return oops($)
     $.page = page
     return $m[3] ?

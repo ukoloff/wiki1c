@@ -18,5 +18,8 @@ function connect() {
 }
 
 for (var k in cte) {
-  connect[k] = `${k} as (${cte[k]})`
+  connect[k] = typeof (cte[k]) == 'function' ?
+    $ => (k => `${k} as (${cte[k]($)})`)(k)
+    :
+    `${k} as (${cte[k]})`
 }

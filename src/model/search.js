@@ -27,7 +27,7 @@ async function feed($, $where) {
   var h = await sql()
   var q = h.request()
   q.query(`
-      with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+      with ${sql.pages}, ${sql.spaces}, ${sql.pagez($)}
       select id, title
       from pagez
       where ${$where}

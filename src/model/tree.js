@@ -9,7 +9,7 @@ module.exports = tree
 async function tree($) {
   var h = await sql()
   var r = await h.request().query(`
-      with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+      with ${sql.pages}, ${sql.spaces}, ${sql.pagez($)}
       select
           id, up,
           iif(md is null, 0, 1) as leaf,
