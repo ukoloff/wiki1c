@@ -11,7 +11,7 @@ exports.item = item
 async function open($) {
   let res = $.res
   res.write('<nav aria-label="breadcrumb"><ol class="breadcrumb">')
-  await item($, `<a href="${$.base}">${html(await space())}</a>`)
+  await item($, `<a href="${$.base}">${html(await space($))}</a>`)
 }
 
 async function close($) {

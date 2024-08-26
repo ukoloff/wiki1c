@@ -49,6 +49,6 @@ exports.pagez = $ => `
           from
               spaces
           where
-              handle = 'obshchee-prostranstvo'
+              handle = '${$.space}'
       )
 `
