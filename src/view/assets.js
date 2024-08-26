@@ -8,7 +8,7 @@ module.exports = assets
 
 async function assets(res) {
   let open = false
-  let src = path.join(__dirname, '../..', res.req.url)
+  let src = path.join(__dirname, '../..', new URL(res.req.url, 'http://none').pathname)
   src = fs.createReadStream(src)
   src
     .on('ready', pipe)
