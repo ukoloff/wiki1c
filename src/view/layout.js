@@ -1,17 +1,20 @@
 //
 // HTML template
 //
+const themes = require('../model/themes')
+
 module.exports = layout
 
 async function layout($, title = 'База знаний') {
   let assets = $.base + 'assets/'
   let res = $.res
+  const theme = themes.get($)
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
   res.write(`
-<!DOCTYPE html><html><head>
+<!DOCTYPE html><html data-bs-theme="${theme.dark ? 'dark' : 'light'}"><head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-<link href="${assets}bootswatch/litera/bootstrap.min.css" rel="stylesheet">
+<link href="${assets}bootswatch/${theme.name}/bootstrap.min.css" rel="stylesheet">
 <link href="${assets}fa/css/font-awesome.min.css" rel="stylesheet">
 <link href="${assets}kb.css" rel="stylesheet">
 <script src="${assets}kb.js"></script>
