@@ -52,6 +52,7 @@ async function list($) {
     Сохранить
     </button>
     </div>
+    <script src="${$.base}assets/theme.js"></script>
     `)
 }
 
