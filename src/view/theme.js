@@ -22,25 +22,26 @@ async function list($) {
   await bcz.item($, 'Оформление', true)
   await bcz.close($)
 
-  let tz = await themes()
-  let thz = tz.names
-  thz.sort()
+  let thz = themes.names
+  const current = themes.get($)
 
   res.write('<form method="POST"><div class="text-center">')
   for (let theme of thz) {
+    let active = theme==current.name
     res.write(`
-      <span class="card">
-      <label class="form-check-label"><input class="form-check-input" type="radio" name="theme" value="${theme}" required>
+      <span class="card${active ? ' bg-success' : ''}">
+      <label class="form-check-label"><input class="form-check-input" type="radio"
+        name="theme" value="${theme}" ${active ? 'checked' : ''} required>
       ${html(theme.replace(/\w/, c => c.toUpperCase()))}
       </label>&nbsp;
-      <a href="${tz.url}${theme}" target="bootswatch"><i class="fa fa-eye"></i></a>
+      <a href="${themes.url}${theme}" target="bootswatch"><i class="fa fa-eye"></i></a>
       </span>
       `
       .trimStart())
   }
   res.write(`
     <hr>
-    <label class="form-check-label"><input class="form-check-input" type="checkbox" name="dark">
+    <label class="form-check-label"><input class="form-check-input" type="checkbox" ${current.dark ? 'checked' : ''} name="dark">
     Потемнее
     </label>
     <p></p>
@@ -53,9 +54,8 @@ async function list($) {
 
 async function post($) {
   let { theme, dark } = qs.decode(await read($.req))
-  let thz = await themes()
-  if (!thz.names.includes(theme))
-    theme = 'litera'
+  if (!themes.names.includes(theme))
+    theme = themes.std
   let cookie = theme
   if (dark)
     cookie += '!'
