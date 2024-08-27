@@ -19,8 +19,6 @@ module.exports = {
   get,
 }
 
-delete list
-
 function get($) {
   let theme = cookies($).theme || ''
   let dark = /!/.test(theme)

@@ -57,14 +57,24 @@ async function list($) {
 }
 
 async function post($) {
-  let { theme, dark } = qs.decode(await read($.req))
+  let { theme, dark, ref } = qs.decode(await read($.req))
+  let ref2 = $.req.headers.referer
+
+  let refA = new URL($.base, ref).toString()
+  let refB = new URL($.base, ref).toString()
+
+  let redir2 = refA == refB && ref.startsWith(refA) && ref2.startsWith(refB) ?
+    ref
+    :
+    '/'
+
   if (!themes.names.includes(theme))
     theme = themes.std
   let cookie = theme
   if (dark)
     cookie += '!'
   $.res.setHeader('Set-Cookie', `theme=${qs.escape(cookie)}; HttpOnly; Path=${$.base}`)
-  $.res.writeHead(301, { Location: '/' })
+  $.res.writeHead(301, { Location: redir2 })
     .end()
 }
 
