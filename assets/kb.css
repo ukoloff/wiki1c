@@ -37,3 +37,9 @@ body>div:nth-child(3) {
 details>div:last-child {
   margin-left: 1em;
 }
+
+span.card {
+  display: inline-block;
+  padding: 0 1ex;
+  margin: 0.5ex 0;
+}

@@ -29,10 +29,12 @@ async function list($) {
   res.write('<form method="POST"><div class="text-center">')
   for (let theme of thz) {
     res.write(`
+      <span class="card">
       <label class="form-check-label"><input class="form-check-input" type="radio" name="theme" value="${theme}" required>
       ${html(theme.replace(/\w/, c => c.toUpperCase()))}
-      </label>
+      </label>&nbsp;
       <a href="${tz.url}${theme}" target="bootswatch"><i class="fa fa-eye"></i></a>
+      </span>
       `
       .trimStart())
   }
