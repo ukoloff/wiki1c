@@ -49,6 +49,7 @@ async function list($) {
     </label>
     <p></p>
     <button type="submit" class="btn btn-primary">
+    <i class="fa fa-floppy-o fa-lg text-dark"></i>
     Сохранить
     </button>
     </div>
