@@ -13,7 +13,7 @@ async function theme($) {
   if ($.req.method == 'POST')
     return post($)
   $.content = list
-  layout($)
+  layout($, 'Выбор темы')
 }
 
 async function list($) {
