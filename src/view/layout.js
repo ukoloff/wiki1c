@@ -21,7 +21,8 @@ async function layout($, title = 'База знаний') {
 <div class="text-center"><i class="fa fa-refresh fa-spin fa-lg fa-fw text-info"></i> Загрузка...</div>
 `
     .trim())
-  res.write(`</div></div><div><div class="container-fluid">`)
+  res.write(`</div><a class="btn btn-secondary btn-sm" href="${$.base}theme/" title="Выбрать тему оформления"><i class="fa fa-paint-brush"></i></a>`)
+  res.write(`</div><div><div class="container-fluid">`)
   await $.content($)
   res.write(`</div></div><div></div></body></html>`)
   res.end()
