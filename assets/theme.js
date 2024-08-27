@@ -16,7 +16,7 @@
       let $m = /\/assets\/bootswatch\//.exec(z.getAttribute('href'))
       if (!$m)
         continue
-      z.href = $m[0] + name + $m.input.slice($m.index + $m[0].length).replace(/^[^\/]*/, '')
+      z.href = $m.input.slice(0, $m.index) +  $m[0] + name + $m.input.slice($m.index + $m[0].length).replace(/^[^\/]*/, '')
       break
     }
   }
