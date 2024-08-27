@@ -5,11 +5,11 @@ const sql = require('../sql')
 
 module.exports = space
 
-async function space() {
+async function space($) {
   var h = await sql()
   var r = await h.request()
    .query(`
-      with ${sql.pages}, ${sql.spaces}, ${sql.pagez}
+      with ${sql.pages}, ${sql.spaces}, ${sql.pagez($)}
       select
         top(1) S.name
       from

@@ -1,8 +1,6 @@
 //
 // Search page
 //
-const url = require('node:url')
-const qs = require('node:querystring')
 const html = require('./h')
 const layout = require('./layout')
 const bcz = require('./breadcz')
@@ -10,14 +8,15 @@ const model = require('../model/search')
 
 module.exports = search
 
-async function search(res) {
-  var q = qs.decode(url.parse(res.req.url).query).q || ''
+async function search($) {
+  let res = $.res
+  let q = new URL($.req.url, 'http://none').searchParams.get('q') || ''
 
   const $where = model.prepare(q)
 
-  await bcz.open(res)
-  await bcz.item(res, 'Поиск', true)
-  await bcz.close(res)
+  await bcz.open($)
+  await bcz.item($, 'Поиск', true)
+  await bcz.close($)
 
   res.write(`
     <form>
@@ -28,7 +27,7 @@ async function search(res) {
     .trim())
 
   if ($where)
-    await render(res, await model.feed($where))
+    await render($, await model.feed($, $where))
   else
     res.write(`
     <p>
@@ -40,12 +39,13 @@ async function search(res) {
       .trim())
 }
 
-async function render(res, iterator) {
+async function render($, iterator) {
+  let res = $.res
   res.write('<ul class="list-group">')
   $N = 0;
   for await (let row of iterator) {
     $N++
-    res.write(`<li class="list-group-item"><a href="${res.$base}${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
+    res.write(`<li class="list-group-item"><a href="${$.base}${row.id.toString('hex')}/">${html(row.title)}</a></li>\n`)
   }
   if (!$N)
     res.write('<li class="list-group-item"><i>Ничего не найдено</i></li>')

@@ -6,9 +6,10 @@ const path = require('node:path')
 
 module.exports = assets
 
-async function assets(res) {
+async function assets($) {
+  let res = $.res
   let open = false
-  let src = path.join(__dirname, '../..', new URL(res.req.url, 'http://none').pathname)
+  let src = path.join(__dirname, '../..', new URL($.req.url, 'http://none').pathname)
   src = fs.createReadStream(src)
   src
     .on('ready', pipe)

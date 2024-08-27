@@ -7,11 +7,11 @@ const sql2it = require('../util/sql2it')
 
 module.exports = breadcx
 
-async function breadcx(page) {
+async function breadcx($) {
   var h = await sql()
   q = h.request()
   q
-    .input('pid', mssql.Binary, page.id)
+    .input('pid', mssql.Binary, $.page.id)
     .query(`
       with ${sql.pages},
       tower as (

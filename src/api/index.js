@@ -7,10 +7,12 @@ const dispatch = {
   tree: require('./tree')
 }
 
-async function api(res) {
+async function api($) {
+  let res = $.res
   res.setHeader('Content-Type', 'application/json')
-  read(res.req)
+  read($.req)
     .then(JSON.parse)
+    .then(data => ({...data, $}))
     .then(data => (dispatch[data.command] || nop)(data))
     .catch(e => ({
       error: e.name,
