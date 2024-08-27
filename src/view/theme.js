@@ -25,7 +25,10 @@ async function list($) {
   let thz = themes.names
   const current = themes.get($)
 
-  res.write('<form method="POST"><div class="text-center">')
+  res.write(`
+    <form method="POST"><div class="text-center">
+    <input type="hidden" name="ref" value="${html($.req.headers.referer)}"/>
+    `)
   for (let theme of thz) {
     let active = theme==current.name
     res.write(`
