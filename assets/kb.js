@@ -1,8 +1,10 @@
 !(function () {
   let base = "/"
 
-  if (localStorage.split)
-    document.documentElement.style.setProperty('--split-ratio', localStorage.split + '%')
+  let aStorage = window.sessionStorage || window.localStorage || {}
+
+  if (aStorage.split)
+    document.documentElement.style.setProperty('--split-ratio', aStorage.split + '%')
 
   document.addEventListener("DOMContentLoaded", ready, { once: true })
 
@@ -22,7 +24,7 @@
     var fired = false
 
     function putLeftPane() {
-      renderLeftPane(json(localStorage.tree))
+      renderLeftPane(json(aStorage.tree))
     }
 
     async function loadLeftPane() {
@@ -30,13 +32,13 @@
         method: 'POST',
         body: JSON.stringify({
           command: 'tree',
-          hash: (json(localStorage.tree) || {}).hash
+          hash: (json(aStorage.tree) || {}).hash
         })
       })
       let data = await res.json()
       if (data.the == 'same')
         return
-      localStorage.tree = JSON.stringify(data)
+      aStorage.tree = JSON.stringify(data)
       renderLeftPane(data)
     }
 
@@ -75,7 +77,7 @@
       if (!fired) return
       var r = Math.round(ev.clientX / splitter.parentNode.clientWidth * 100)
       r = Math.min(95, Math.max(5, r))
-      localStorage.split = r
+      aStorage.split = r
       document.documentElement.style.setProperty('--split-ratio', r + '%')
     }
 
@@ -87,7 +89,7 @@
     function updateExp() {
       var list = []
       document.querySelectorAll('details[open]').forEach(z => list.push(z.id))
-      localStorage.expand = JSON.stringify(list)
+      aStorage.expand = JSON.stringify(list)
     }
   }
   var htmlEntities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }
@@ -104,7 +106,7 @@
 
   function expStatus() {
     let result = {}
-    for (let id of json(localStorage.expand) || []) {
+    for (let id of json(aStorage.expand) || []) {
       result[id] = 1
     }
     return result

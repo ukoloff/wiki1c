@@ -15,6 +15,12 @@ body>div:nth-child(1) {
   white-space: nowrap;
 }
 
+body>div:nth-child(1)>a:last-child {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 body>div:nth-child(2) {
   left: var(--split-ratio);
   right: 0;
@@ -30,4 +36,10 @@ body>div:nth-child(3) {
 
 details>div:last-child {
   margin-left: 1em;
+}
+
+span.card {
+  display: inline-block;
+  padding: 0 1ex;
+  margin: 0.5ex 0;
 }

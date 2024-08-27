@@ -7,6 +7,7 @@ const oops = require('./view/404')
 const article = require('./view/article')
 const attachment = require('./view/attachment')
 const assets = require('./view/assets')
+const theme = require('./view/theme')
 const api = require('./api')
 
 module.exports = route
@@ -30,6 +31,9 @@ async function route(req, res) {
 
   if (/^\/assets\/.*/.test(path))
     return assets($)
+
+  if (path == '/theme/')
+    return theme($)
 
   let $m = /^\/([\da-f]{4,})($|\/)(.*)/.exec(path)
   if ($m) {
