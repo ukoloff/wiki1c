@@ -33,6 +33,10 @@ body>div:nth-child(3) {
   cursor: w-resize;
 }
 
+body>div.active:nth-child(3) {
+  border-color: var(--bs-danger);
+}
+
 details>div:last-child {
   margin-left: 1em;
 }
