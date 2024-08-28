@@ -71,6 +71,7 @@
       if (fired) return
       ev.preventDefault()
       fired = true
+      splitter.classList.add('active')
     }
 
     function move(ev) {
@@ -84,6 +85,7 @@
     function up(ev) {
       if (!fired) return
       fired = false
+      splitter.classList.remove('active')
     }
 
     function updateExp() {
