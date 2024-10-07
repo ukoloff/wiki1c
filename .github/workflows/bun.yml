@@ -1,0 +1,15 @@
+name: Touch Bun
+
+on:
+  push:
+
+jobs:
+
+  touch:
+    runs-on:
+    - windows-latest
+    - ubuntu-lates
+    steps:
+    - uses: actions/checkout@v4
+    - uses: oven-sh/setup-bun@v2
+    - run:  bun x cowsay "Hello, world!"
