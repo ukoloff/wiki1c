@@ -6,8 +6,12 @@ on:
 jobs:
 
   touch:
-    runs-on: windows-latest
-    # - ubuntu-lates
+    strategy:
+      matrix:
+        os:
+        - windows-latest
+        - ubuntu-lates
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
     - uses: oven-sh/setup-bun@v2
