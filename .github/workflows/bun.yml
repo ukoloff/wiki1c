@@ -6,9 +6,8 @@ on:
 jobs:
 
   touch:
-    runs-on:
-    - windows-latest
-    - ubuntu-lates
+    runs-on: windows-latest
+    # - ubuntu-lates
     steps:
     - uses: actions/checkout@v4
     - uses: oven-sh/setup-bun@v2
